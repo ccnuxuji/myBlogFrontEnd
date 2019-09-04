@@ -11,7 +11,7 @@ interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  private API = '//localhost:8080/my_blog';
+  private API = 'www.xujiwch.com:8080/techroad/';
   private signUpAPI = this.API + '/signup';
 
   constructor(private http: HttpClient) { }
