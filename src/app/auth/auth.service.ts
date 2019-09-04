@@ -1,4 +1,4 @@
-import {Injectable, ViewChild} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 interface AuthResponseData {
@@ -11,7 +11,7 @@ interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  private API = '//localhost:8080/tmall_springboot';
+  private API = '//localhost:8080/my_blog';
   private signUpAPI = this.API + '/signup';
 
   constructor(private http: HttpClient) { }
