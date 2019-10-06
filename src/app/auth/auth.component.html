@@ -8,13 +8,13 @@
     </div>
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
       <div class="form-group">
-        <label for="email">E-Mail</label>
+        <label for="username">User Name</label>
         <input
           type="text"
           class="form-control"
-          id="email"
+          id="username"
           ngModel
-          name="email"
+          name="username"
           required
           email
         >

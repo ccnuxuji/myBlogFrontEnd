@@ -25,9 +25,14 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/highlightjs/styles/dracula.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/highlightjs/highlight.pack.js",
+              "src/assets/js/hljsInit.js"
+            ]
           },
           "configurations": {
             "production": {
