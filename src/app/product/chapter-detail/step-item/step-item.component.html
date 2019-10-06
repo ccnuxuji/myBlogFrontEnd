@@ -1,0 +1,11 @@
+<div (click)="onClick()" #stepEl>
+  <h1>{{ step.name }}</h1>
+  <quill-view-html
+    [content]="step.content"
+    format="text"
+    theme="snow"
+  ></quill-view-html>
+  <hr>
+</div>
+
+

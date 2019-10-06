@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-xs-12">
+    <ul class="list-group">
+      <app-chapter-item
+        class="list-group-item"
+        *ngFor="let i of chapters;"
+        [chapter]="i">
+      </app-chapter-item>
+    </ul>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <button class="btn btn-success" (click)="onNewChapter()">New Chapter</button>
+  </div>
+</div>

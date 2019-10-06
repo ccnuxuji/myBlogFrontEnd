@@ -1,0 +1,11 @@
+<div class="panel panel-default"
+     *ngFor="let i of topics; let idx = index">
+  <div class="panel-heading">{{ i.name }}</div>
+  <div class="panel-body">
+    <app-product-item
+      *ngFor="let j of getProductsByTopic(i);"
+      [product]="j"
+      [isOntopic]="false"
+    ></app-product-item>
+  </div>
+</div>

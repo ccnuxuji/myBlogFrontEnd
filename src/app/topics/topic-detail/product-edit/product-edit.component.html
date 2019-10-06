@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <button type="submit"
+                    class="btn btn-success"
+            >Save</button>
+            <button type="button"
+                    class="btn btn-info"
+                    (click)="onCancel()"
+            >Cancel</button>
+            <button type="button"
+                    class="btn btn-danger"
+                    (click)="onDelete()"
+            >Delte</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="tid">Tid</label>
+              <input
+                type="number"
+                id="tid"
+                formControlName="tid"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="name">Product Name</label>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="description">Product Description</label>
+              <input
+                type="text"
+                id="description"
+                formControlName="description"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="thumbnail">Thumbnail</label>
+              <input
+                type="text"
+                id="thumbnail"
+                formControlName="thumbnail"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="rank">Product Rank</label>
+              <input
+                type="number"
+                id="rank"
+                formControlName="ord"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+
+    </div>
+  </div>
+</div>

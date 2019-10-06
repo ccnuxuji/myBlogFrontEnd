@@ -1,0 +1,14 @@
+<quill-view-html
+  [content]="contentObject"
+  format="text"
+  theme="snow"
+></quill-view-html>
+
+
+<quill-editor
+  [styles]="{height: '250px'}"
+  (onEditorCreated)="editorCreated($event)"
+  (onContentChanged)="contentChanged($event)"
+  [(ngModel)]="contentObject"
+></quill-editor>
+

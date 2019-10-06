@@ -1,0 +1,17 @@
+<div class="col-xs-6 col-md-3" >
+  <div class="caption"
+       [routerLink]="['/product/',product.id]"
+       routerLinkActive="active"
+       style="cursor: pointer">
+    <a  class="thumbnail module">
+      <h2>{{ product.name }}</h2>
+      <p>{{ product.description }}</p>
+    </a>
+  </div>
+  <button class="btn btn-success"
+          *ngIf="isOntopic"
+          (click)="onEdit()">Eidt</button>
+</div>
+
+
+

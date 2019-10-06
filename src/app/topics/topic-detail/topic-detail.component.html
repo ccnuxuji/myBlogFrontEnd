@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div id="head">
+      <p>{{ topic.name }}</p>
+      <button class="btn btn-success" (click)="onClick()">Eidt</button>
+    </div>
+
+  </div>
+  <div class="panel-body">
+      <app-product-item
+        *ngFor="let i of products;"
+        [product]="i"
+        [isOntopic]="true"
+      ></app-product-item>
+
+    <div class="col-xs-6 col-md-3" >
+      <div class="caption"
+           (click)="newProduct()"
+           routerLinkActive="active"
+           style="cursor: pointer">
+        <a  class="thumbnail module">
+          <h2>{{ productNew.name }}</h2>
+          <p>{{ productNew.description }}</p>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
