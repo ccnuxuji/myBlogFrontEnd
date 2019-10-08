@@ -3,16 +3,13 @@ import {HttpClient} from '@angular/common/http';
 import {Product} from '../../shared/product.model';
 import {Subject} from 'rxjs';
 import {Topic} from '../../shared/topic.model';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   productsChanged = new Subject<Product[]>();
-
-  private API = '//localhost:8080/techroad';
-  private productByTopicAPI = this.API + '/products_topic';
-  private producsAPI = this.API + '/products';
   private products: Product[] = [];
   public product: Product = new Product(null, null, null, '', '', '');
   public productChanged: Subject<Product> = new Subject();
@@ -30,7 +27,7 @@ export class ProductService {
 
   fetchProductsByTopic(topicId: number) {
     const para = {tid: String(topicId)};
-    this.http.get<Product[]>(this.productByTopicAPI, {params: para}).
+    this.http.get<Product[]>(environment.API + '/products_topic', {params: para}).
     subscribe(products => {
       this.setProducts(products);
       console.log(products);
@@ -38,7 +35,7 @@ export class ProductService {
   }
 
   fetchProducts() {
-    this.http.get<Product[]>(this.producsAPI).
+    this.http.get<Product[]>(environment.API + '/products').
     subscribe(products => {
       this.setProducts(products);
       console.log(products);
@@ -56,7 +53,8 @@ export class ProductService {
   }
 
   fetchProductById(productId: number) {
-    this.http.get(this.API + '/product/' + productId).subscribe(
+    this.http.get(environment.API + '/product/' + productId).
+    subscribe(
       (product: Product) => {
         this.product = product;
         this.productChanged.next(this.product);
@@ -65,13 +63,15 @@ export class ProductService {
   }
 
   updateProduct(product: Product) {
-    this.http.post(this.API + '/product', product).subscribe(response => {
+    this.http.post(environment.API + '/product', product).
+    subscribe(response => {
       console.log(response);
     });
   }
 
   deleteProduct(productId: number) {
-    this.http.delete(this.API + '/productDel/' + productId).subscribe(response => {
+    this.http.delete(environment.API + '/productDel/' + productId).
+    subscribe(response => {
       console.log(response);
     });
   }

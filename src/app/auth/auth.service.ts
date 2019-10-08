@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 export interface AuthResponseData {
   code: number;
@@ -11,15 +12,13 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  private API = '//39.108.89.204:8080/techroad';
-
   constructor(private http: HttpClient) {
   }
 
   signup(name: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        this.API + '/signup',
+        environment.API + '/signup',
         {
           name,
           password
@@ -29,7 +28,7 @@ export class AuthService {
   login(name: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        this.API + '/login',
+        environment.API + '/login',
         {
           name,
           password,
