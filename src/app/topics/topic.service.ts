@@ -2,22 +2,19 @@ import {Injectable} from '@angular/core';
 import {Topic} from '../shared/topic.model';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TopicService {
   topicsChanged = new Subject<Topic[]>();
-
-  private API = '//localhost:8080/techroad';
-  private topicsAPI = this.API + '/topics';
-  private topicAPI = this.API + '/topic';
   private topics: Topic[] = [];
 
   constructor(private http: HttpClient) { }
 
   fetchTopics() {
-    this.http.get<Topic[]>(this.topicsAPI).
+    this.http.get<Topic[]>(environment.API + '/topics').
       subscribe(topics => {
         this.setTopics(topics);
         console.log(topics);
@@ -44,14 +41,14 @@ export class TopicService {
   }
 
   updateTopic(topic: Topic) {
-    this.http.post(this.topicAPI, topic).
+    this.http.post(environment.API + '/topic', topic).
     subscribe(response => {
       console.log(response);
     });
   }
 
   deleteTopic(topicId: number) {
-    this.http.delete(this.topicAPI + '/' + topicId).
+    this.http.delete(environment.API + '/topic/' + topicId).
     subscribe(response => {
       console.log(response);
     });
