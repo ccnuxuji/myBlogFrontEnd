@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import {User} from '../shared/user.model';
+import {BehaviorSubject} from 'rxjs';
 
 export interface AuthResponseData {
   code: number;
@@ -12,6 +14,8 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
+  user = new BehaviorSubject<User>(null);
+
   constructor(private http: HttpClient) {
   }
 

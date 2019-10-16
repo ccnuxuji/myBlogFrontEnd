@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+
 import {Product} from '../../shared/product.model';
 import {Subject} from 'rxjs';
 import {Topic} from '../../shared/topic.model';
 import {environment} from '../../../environments/environment';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -35,11 +37,12 @@ export class ProductService {
   }
 
   fetchProducts() {
-    this.http.get<Product[]>(environment.API + '/products').
-    subscribe(products => {
-      this.setProducts(products);
-      console.log(products);
-    });
+    return this.http.get<Product[]>(environment.API + '/products').
+      pipe(
+        tap(products => {
+          this.setProducts(products);
+        })
+    );
   }
 
   getProductsByTopic(topic: Topic) {

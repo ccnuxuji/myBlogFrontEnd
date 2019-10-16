@@ -3,6 +3,7 @@ import {Topic} from '../shared/topic.model';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,12 @@ export class TopicService {
   constructor(private http: HttpClient) { }
 
   fetchTopics() {
-    this.http.get<Topic[]>(environment.API + '/topics').
-      subscribe(topics => {
-        this.setTopics(topics);
-        console.log(topics);
-    });
+    return this.http.get<Topic[]>(environment.API + '/topics').
+      pipe(
+        tap(topics => {
+          this.setTopics(topics);
+        }),
+    );
   }
 
   setTopics(topics: Topic[]) {
