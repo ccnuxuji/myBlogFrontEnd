@@ -17,14 +17,8 @@ export class TopicStartComponent implements OnInit {
               private productService: ProductService) { }
 
   ngOnInit() {
-    this.topicService.fetchTopics();
-    this.topicService.topicsChanged.subscribe(topics => {
-      this.topics = this.topicService.getTopics();
-    });
-    this.productService.fetchProducts();
-    this.productService.productsChanged.subscribe(products => {
-      this.products = this.productService.getProducts();
-    });
+    this.topics = this.topicService.getTopics();
+    this.products = this.productService.getProducts();
   }
 
   getProductsByTopic(topic: Topic) {

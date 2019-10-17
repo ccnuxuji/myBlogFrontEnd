@@ -11,8 +11,7 @@ export class TopicsResolverService implements Resolve<Topic[]> {
   constructor(private topicService: TopicService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Topic[]> | Promise<Topic[]> | Topic[] {
-    this.topicService.fetchTopics().subscribe();
-    return undefined;
+    return this.topicService.fetchTopics();
   }
 
 }

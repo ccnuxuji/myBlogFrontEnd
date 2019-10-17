@@ -7,9 +7,19 @@ import {ChapterEditComponent} from './chapter-edit/chapter-edit.component';
 import {ChapterDetailComponent} from './chapter-detail/chapter-detail.component';
 
 const routes: Routes = [
-  {path: 'product/:productId', component: ProductComponent, children: [
-      {path: '', component: ProdductStartComponent, pathMatch: 'full'},
-      {path: 'new', component: ChapterEditComponent, pathMatch: 'full'},
+  {
+    path: 'product/:productId',
+    component: ProductComponent,
+    children: [
+      {path: '',
+        component: ProdductStartComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'new',
+        component: ChapterEditComponent,
+        pathMatch: 'full'
+      },
       {path: ':chapterId', component: ChapterDetailComponent},
       {path: ':chapterId/edit', component: ChapterEditComponent},
     ]},

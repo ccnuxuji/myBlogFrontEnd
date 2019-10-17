@@ -14,7 +14,6 @@ export class ProductsResolverService implements Resolve<Product[]> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product[]> | Promise<Product[]> | Product[] {
-    this.productService.fetchProducts().subscribe();
-    return undefined;
+    return this.productService.fetchProducts();
   }
 }

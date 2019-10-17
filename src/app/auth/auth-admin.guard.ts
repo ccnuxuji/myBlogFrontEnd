@@ -10,9 +10,10 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {AuthService} from './auth.service';
+import {map, take} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
-export class AuthGuard implements CanActivate, CanActivateChild {
+export class AuthAdminGuard implements CanActivate, CanActivateChild {
 
   constructor(private authService: AuthService, private router: Router) {
   }
@@ -49,6 +50,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean | UrlTree {
-    return false;
+    return true;
+    // return this.authService.user.pipe(
+    //   map(user => {
+    //     const isAuth = !!user;
+    //     if (isAuth && user.name === 'ccnuxuji') {
+    //       return true;
+    //     }
+    //     return this.router.createUrlTree(['/auth']);
+    //   })
+    // );
   }
 }

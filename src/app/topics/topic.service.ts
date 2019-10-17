@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Topic} from '../shared/topic.model';
 import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs';
+
+import {Topic} from '../shared/topic.model';
+import {Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {tap} from 'rxjs/operators';
 
@@ -29,7 +30,7 @@ export class TopicService {
   }
 
   getTopics() {
-    return this.topics;
+    return this.topics.slice();
   }
 
   getTopicById(topicId: number): Topic {
@@ -43,10 +44,7 @@ export class TopicService {
   }
 
   updateTopic(topic: Topic) {
-    this.http.post(environment.API + '/topic', topic).
-    subscribe(response => {
-      console.log(response);
-    });
+    return this.http.post(environment.API + '/topic', topic);
   }
 
   deleteTopic(topicId: number) {

@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+
 import { environment } from '../../environments/environment';
 import {User} from '../shared/user.model';
 import {BehaviorSubject} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 export interface AuthResponseData {
   code: number;
-  data: {};
+  data: any;
   message: string;
 }
 
@@ -16,8 +19,8 @@ export interface AuthResponseData {
 export class AuthService {
   user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient,
+              private router: Router) {}
 
   signup(name: string, password: string) {
     return this.http
@@ -36,8 +39,33 @@ export class AuthService {
         {
           name,
           password,
-        }
+        },
+        {withCredentials: true}
+      )
+      .pipe(
+        tap(res => {
+          this.handleAuthentication(res.data);
+        })
       );
+  }
+
+  checkLogin() {
+    return this.http
+      .get<AuthResponseData>(
+        environment.API + '/checkLogin', {withCredentials: true}
+      );
+  }
+
+  private handleAuthentication(name: string) {
+    const user = new User(name);
+    this.user.next(user);
+    localStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/topic']);
+    localStorage.removeItem('userData');
   }
 
 }

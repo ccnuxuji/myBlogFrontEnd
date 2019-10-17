@@ -18,10 +18,7 @@ export class TopicListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.topicService.fetchTopics();
-    this.subscription =  this.topicService.topicsChanged.subscribe(topics => {
-      this.topics = this.topicService.getTopics();
-    });
+    this.topics = this.topicService.getTopics();
   }
 
   onNewTopic() {

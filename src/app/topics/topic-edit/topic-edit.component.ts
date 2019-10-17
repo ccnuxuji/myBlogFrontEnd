@@ -28,7 +28,7 @@ export class TopicEditComponent implements OnInit {
 
   onSubmit() {
     console.log(this.topicForm.value);
-    this.topicService.updateTopic(this.topicForm.value);
+    this.topicService.updateTopic(this.topicForm.value).subscribe();
     this.onCancel();
   }
 
