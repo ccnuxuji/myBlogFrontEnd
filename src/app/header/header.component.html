@@ -5,23 +5,41 @@
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/auth">Sign</a></li>
         <li routerLinkActive="active"><a routerLink="/topic">Topic</a></li>
+        <!--<li *ngIf="isAuthenticated">
+          <a style="cursor: pointer;" (click)="checkLogin()">checkLogin</a>
+        </li>-->
       </ul>
-      <form class="navbar-form navbar-right">
+
+      <form class="navbar-form navbar-right"
+            #authForm="ngForm"
+            (ngSubmit)="onSearch(authForm)"
+            *ngIf="!isLoading">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text"
+                 class="form-control"
+                 id="keyword"
+                 name="keyword"
+                 required
+                 ngModel
+                 placeholder="Search">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
+
       <ul class="nav navbar-nav navbar-right">
+        <li *ngIf="isAuthenticated">
+          <a style="cursor: pointer;"
+             [routerLink]="['welcome']"> Welcome {{ currUser.name }}</a>
+        </li>
         <li *ngIf="isAuthenticated">
           <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
         </li>
-        <li *ngIf="isAuthenticated">
-          <a style="cursor: pointer;" (click)="checkLogin()">checkLogin</a>
+        <li routerLinkActive="active"
+            *ngIf="!isAuthenticated"
+        ><a routerLink="/auth">Login</a>
         </li>
-        <li class="dropdown" appDropdown>
+        <!--<li class="dropdown" appDropdown>
           <a class="dropdown-toggle"
              role="button">
             Manager <span class="caret"></span>
@@ -30,7 +48,7 @@
             <li><a style="cursor: pointer;">Save Data</a></li>
             <li><a style="cursor: pointer;">Fetch Data</a></li>
           </ul>
-        </li>
+        </li>-->
       </ul>
     </div>
   </div>

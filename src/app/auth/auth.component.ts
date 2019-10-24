@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthService, AuthResponseData} from './auth.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {Router} from '@angular/router';
+import {AlertComponent} from '../shared/alert/alert.component';
+import {PlaceholderDirective} from '../shared/placeholder/placeholder.directive';
 
 @Component({
   selector: 'app-auth',
@@ -13,8 +16,14 @@ export class AuthComponent implements OnInit {
   isLoginMode = false;
   isLoading = false;
   error = null;
+  @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
+  private closeSub: Subscription;
 
-  constructor(private authService: AuthService) { }
+
+
+  constructor(private authService: AuthService,
+              private router: Router,
+              private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
   }
@@ -38,17 +47,35 @@ export class AuthComponent implements OnInit {
 
     authObs.subscribe(
       resData => {
-        console.log(resData);
-        this.isLoading = false;
-      },
-      errorMessage => {
-        console.log(errorMessage);
-        this.error = errorMessage;
-        this.isLoading = false;
+        if (resData.code === 0) {
+          this.isLoading = false;
+          this.router.navigate(['/topic']);
+        } else {
+          this.error = resData.message;
+          this.showErrorAlert(resData.message);
+          this.isLoading = false;
+        }
       }
     );
 
     form.reset();
+  }
+
+  private showErrorAlert(message: string) {
+    // const alertCmp = new AlertComponent();
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
+      AlertComponent
+    );
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+
+    componentRef.instance.message = message;
+    this.closeSub = componentRef.instance.close.subscribe(() => {
+      this.closeSub.unsubscribe();
+      hostViewContainerRef.clear();
+    });
   }
 
 }

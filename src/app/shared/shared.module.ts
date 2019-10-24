@@ -6,21 +6,27 @@ import {EditorComponent} from './editor/editor.component';
 import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 import {DropdownDirective} from './dropdown.directive';
 import {QuillModule} from 'ngx-quill';
+import {AlertComponent} from './alert/alert.component';
+import {PlaceholderDirective} from './placeholder/placeholder.directive';
 
 @NgModule({
   declarations: [
     EditorComponent,
     LoadingSpinnerComponent,
-    DropdownDirective
+    DropdownDirective,
+    AlertComponent,
+    PlaceholderDirective,
   ],
   exports: [
     EditorComponent,
     LoadingSpinnerComponent,
     DropdownDirective,
+    AlertComponent,
+    PlaceholderDirective,
     QuillModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   imports: [
     CommonModule,

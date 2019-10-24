@@ -13,6 +13,8 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button class="btn btn-success" (click)="onNewChapter()">New Chapter</button>
+    <button class="btn btn-success"
+            *ngIf="isAdminLogin"
+            (click)="onNewChapter()">New Chapter</button>
   </div>
 </div>

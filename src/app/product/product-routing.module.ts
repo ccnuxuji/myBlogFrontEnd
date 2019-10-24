@@ -2,26 +2,41 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 import {ProductComponent} from './product.component';
-import {ProdductStartComponent} from './prodduct-start/prodduct-start.component';
+import {ProductStartComponent} from './product-start/product-start.component';
 import {ChapterEditComponent} from './chapter-edit/chapter-edit.component';
 import {ChapterDetailComponent} from './chapter-detail/chapter-detail.component';
+import {ChaptersResolverService} from './chapter-list/chapters-resolver.service';
+import {AuthAdminGuard} from '../auth/auth-admin.guard';
+import {StepsResolverService} from './chapter-detail/steps-resolver.service';
 
 const routes: Routes = [
   {
-    path: 'product/:productId',
+    path: '',
     component: ProductComponent,
     children: [
       {path: '',
-        component: ProdductStartComponent,
+        resolve: [ChaptersResolverService],
+        component: ProductStartComponent,
         pathMatch: 'full'
       },
       {
         path: 'new',
+        canActivate: [AuthAdminGuard],
         component: ChapterEditComponent,
+        resolve: [ChaptersResolverService],
         pathMatch: 'full'
       },
-      {path: ':chapterId', component: ChapterDetailComponent},
-      {path: ':chapterId/edit', component: ChapterEditComponent},
+      {
+        path: ':chapterId',
+        resolve: [ChaptersResolverService, StepsResolverService],
+        component: ChapterDetailComponent
+      },
+      {
+        path: ':chapterId/edit',
+        canActivate: [AuthAdminGuard],
+        component: ChapterEditComponent,
+        resolve: [ChaptersResolverService],
+      },
     ]},
 ];
 

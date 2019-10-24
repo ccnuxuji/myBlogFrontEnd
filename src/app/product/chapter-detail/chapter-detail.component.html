@@ -1,31 +1,36 @@
 <div class="panel panel-default">
-
   <div class="panel-heading">
     <div id="head">
-      <p>{{ chapter.name }}</p>
-      <button class="btn btn-success" (click)="onClick()">Eidt</button>
+      <p>{{ currChapterName }}</p>
+      <button class="btn btn-success"
+              *ngIf="isAdminLogin"
+              (click)="editChapter()">Eidt
+      </button>
     </div>
   </div>
-
   <div class="panel-body">
     <app-step-item
       *ngFor="let i of steps;"
       [step]="i"
       (currStep)="clickCurrentStep($event)"
     ></app-step-item>
-    <hr>
   </div>
-
 </div>
 
+<div id="editor" *ngIf="isAdminLogin">
+  <app-editor (editorContentChanged)="getContent($event)"
+              [contentObject]="currStep.content"></app-editor>
+  <br>
+  <button class="btn btn-success"
+          (click)="newStepClick()">提交
+  </button>
+  <button class="btn btn-info"
+          (click)="editStepClick()">修改
+  </button>
+  <button class="btn btn-danger"
+          (click)="deleteStepClick()">删除
+  </button>
+</div>
 
-<app-editor (editorContentChanged)="getContent($event)"
-            [contentObject]="currStep.content"></app-editor>
-
-<br>
-<button class="btn btn-success"
-        (click)="newStepClick()">提交</button>
-<button class="btn btn-danger"
-        (click)="editStepClick()">修改</button>
 <br>
 <br>

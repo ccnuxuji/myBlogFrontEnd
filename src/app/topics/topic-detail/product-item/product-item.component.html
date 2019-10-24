@@ -9,7 +9,7 @@
     </a>
   </div>
   <button class="btn btn-success"
-          *ngIf="isOntopic"
+          *ngIf="isAdminLogin && !isFromStartPage"
           (click)="onEdit()">Eidt</button>
 </div>
 

@@ -2,7 +2,9 @@
   <div class="panel-heading">
     <div id="head">
       <p>{{ topic.name }}</p>
-      <button class="btn btn-success" (click)="onClick()">Eidt</button>
+      <button class="btn btn-success"
+              *ngIf="isAdminLogin"
+              (click)="onClick()">Eidt</button>
     </div>
 
   </div>
@@ -10,12 +12,12 @@
       <app-product-item
         *ngFor="let i of products"
         [product]="i"
-        [isOntopic]="true"
       ></app-product-item>
 
     <div class="col-xs-6 col-md-3" >
       <div class="caption"
            (click)="newProduct()"
+           *ngIf="isAdminLogin"
            routerLinkActive="active"
            style="cursor: pointer">
         <a  class="thumbnail module">

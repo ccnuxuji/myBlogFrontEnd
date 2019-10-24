@@ -59,13 +59,29 @@ export class AuthService {
   private handleAuthentication(name: string) {
     const user = new User(name);
     this.user.next(user);
-    localStorage.setItem('userData', JSON.stringify(user));
+    sessionStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  autoLogin() {
+    const userData: User = JSON.parse(sessionStorage.getItem('userData'));
+    if (!userData) {
+      return;
+    }
+
+    const loadedUser = new User(userData.name);
+    this.user.next(loadedUser);
   }
 
   logout() {
-    this.user.next(null);
-    this.router.navigate(['/topic']);
-    localStorage.removeItem('userData');
+    return this.http
+      .get<AuthResponseData>(
+        environment.API + '/logout', {withCredentials: true}
+      ).pipe(
+        tap(res => {
+          this.user.next(null);
+          sessionStorage.removeItem('userData');
+        })
+      );
   }
 
 }

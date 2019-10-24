@@ -3,12 +3,24 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {TopicsResolverService} from './topics/topics-resolver.service.';
 import {ProductsResolverService} from './topics/topic-detail/products-resolver.service';
+import {SearchComponent} from './search/search.component';
+import {WelcomeComponent} from './welcome/welcome.component';
+import {AuthGuard} from './auth/auth.guard';
 
 const appRoutes: Routes = [
   {
     path: '',
     redirectTo: 'topic',
     pathMatch: 'full',
+  },
+  {
+    path: 'search',
+    component: SearchComponent
+  },
+  {
+    path: 'welcome',
+    canActivate: [AuthGuard],
+    component: WelcomeComponent
   },
   {
     path: 'topic',
@@ -18,6 +30,10 @@ const appRoutes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+  },
+  {
+    path: 'product/:productId',
+    loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
   }
 ];
 

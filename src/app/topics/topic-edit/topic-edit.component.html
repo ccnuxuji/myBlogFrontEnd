@@ -17,6 +17,7 @@
             <button type="button"
                     class="btn btn-danger"
                     (click)="onDelete()"
+                    [disabled]="!editMode"
             >Delete</button>
           </div>
         </div>

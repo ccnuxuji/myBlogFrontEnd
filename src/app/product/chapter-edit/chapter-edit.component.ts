@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ActivatedRoute, Params, Router, RouterStateSnapshot} from '@angular/router';
+
 import {ChapterService} from '../chapter-list/chapter.service';
 import {Chapter} from '../../shared/chapter.model';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-chapter-edit',
@@ -14,17 +14,20 @@ export class ChapterEditComponent implements OnInit {
   chapterId: number;
   editMode = false;
   chapterForm: FormGroup;
-  subscription: Subscription = new Subscription();
+  productId: number;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private chapterService: ChapterService) { }
 
   ngOnInit() {
+    this.route.parent.params.subscribe((params: Params) => {
+      this.productId = +params.productId;
+
+    });
+
     this.route.params.subscribe((params: Params) => {
       this.chapterId = +params.chapterId;
-      console.log(params);
-      console.log('cid is:' + this.chapterId);
       this.editMode = !isNaN(this.chapterId);
       this.initForm();
     });
@@ -32,12 +35,25 @@ export class ChapterEditComponent implements OnInit {
 
   onSubmit() {
     console.log(this.chapterForm.value);
-    this.chapterService.updateChapter(this.chapterForm.value);
+    if (this.editMode) {
+      this.chapterService.updateChapter(this.chapterForm.value)
+        .subscribe(res => {
+          console.log(res);
+        });
+    } else {
+      this.chapterService.addChapter(this.chapterForm.value)
+        .subscribe(res => {
+          console.log(res);
+        });
+    }
     this.onCancel();
   }
 
   onDelete() {
-    this.chapterService.deleteChapter(this.chapterId);
+    this.chapterService.deleteChapter(this.chapterId)
+      .subscribe(res => {
+        console.log(res);
+      });
     this.onCancel();
   }
 
@@ -48,32 +64,26 @@ export class ChapterEditComponent implements OnInit {
   initForm() {
     let chapterId = null;
     let chapterName = '';
-    let chapterPid = null;
+    let chapterPid = this.productId;
     let chapterOrd = null;
     let chapterDescription = '';
 
     if (this.editMode) {
-      let chapter: Chapter = this.chapterService.getChapterById(this.chapterId);
-      this.subscription = this.chapterService.chaptersChanged.subscribe(data => {
-        chapter = this.chapterService.getChapterById(this.chapterId);
-        chapterId = chapter.id;
-        chapterName = chapter.name;
-        chapterPid = chapter.pid;
-        chapterOrd = chapter.ord;
-        chapterDescription = chapter.description;
-        this.chapterForm = new FormGroup({
-          id: new FormControl(chapterId),
-          name: new FormControl(chapterName, Validators.required),
-          pid: new FormControl(chapterPid, Validators.required),
-          ord: new FormControl(chapterOrd, Validators.required),
-          description: new FormControl(chapterDescription)
+      this.chapterService.getChapterById(this.chapterId)
+        .subscribe((chapter: Chapter) => {
+          chapterId = chapter.id;
+          chapterName = chapter.name;
+          chapterPid = chapter.pid;
+          chapterOrd = chapter.ord;
+          chapterDescription = chapter.description;
+          this.chapterForm = new FormGroup({
+            id: new FormControl(chapterId),
+            name: new FormControl(chapterName, Validators.required),
+            pid: new FormControl(chapterPid, Validators.required),
+            ord: new FormControl(chapterOrd, Validators.required),
+            description: new FormControl(chapterDescription)
+          });
         });
-      });
-      chapterId = chapter.id;
-      chapterName = chapter.name;
-      chapterPid = chapter.pid;
-      chapterOrd = chapter.ord;
-      chapterDescription = chapter.description;
     }
 
     this.chapterForm = new FormGroup({
@@ -83,7 +93,6 @@ export class ChapterEditComponent implements OnInit {
       ord: new FormControl(chapterOrd, Validators.required),
       description: new FormControl(chapterDescription)
     });
-
   }
 
 }

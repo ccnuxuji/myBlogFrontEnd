@@ -1,17 +1,32 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgForm} from '@angular/forms';
+import {Subscription} from 'rxjs';
+
 import {AuthService} from '../auth/auth.service';
+import {User} from '../shared/user.model';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
 })
 
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  isAuthenticated = true;
+  isAuthenticated = false;
+  currUser: User;
+  private userSub: Subscription;
 
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+              private router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+      this.currUser = user;
+    });
   }
 
   checkLogin() {
@@ -22,7 +37,18 @@ export class HeaderComponent {
   }
 
   onLogout() {
-    this.authService.logout();
-    console.log('done');
+    this.authService.logout().subscribe(res => {
+      this.router.navigate(['/topic']);
+    });
   }
+
+  onSearch(form: NgForm) {
+    const keyword = form.value.keyword;
+    this.router.navigate(['/search'], {queryParams: {keyword, start: 0}});
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+  }
+
 }

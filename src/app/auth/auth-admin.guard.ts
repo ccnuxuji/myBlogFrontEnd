@@ -26,22 +26,15 @@ export class AuthAdminGuard implements CanActivate, CanActivateChild {
     | UrlTree
     | Promise<boolean | UrlTree>
     | Observable<boolean | UrlTree> {
-    return false;
-    // return this.authService.user.pipe(
-    // take(1),
-    // map(user => {
-    //   const isAuth = !!user;
-    //   if (isAuth) {
-    //     return true;
-    //   }
-    // return this.router.createUrlTree(['/auth']);
-    // })
-    // tap(isAuth => {
-    //   if (!isAuth) {
-    //     this.router.navigate(['/auth']);
-    //   }
-    // })
-    // );
+    return this.authService.user.pipe(
+      map(user => {
+        const isAuth = !!user;
+        if (isAuth && user.name === 'ccnuxuji') {
+          return true;
+        }
+        return this.router.createUrlTree(['/auth']);
+      })
+    );
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot,

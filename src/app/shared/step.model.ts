@@ -1,19 +1,14 @@
 export class Step {
-  id: number;
-  cid: number;
-  name: string;
-  description: string;
-  content: string;
 
-  constructor(id: number, cid: number, name: string, description: string, content: string) {
-    this.id = id;
-    this.cid = cid;
-    this.name = name;
-    this.description = description;
-    this.content = content;
+  constructor(public id: number, public cid: number, public name: string,
+              public description: string, public content: string) {
   }
 
-  getId() {
-    return this.id;
+  constructor() {
+    this.id = null;
+    this.cid = null;
+    this.name = null;
+    this.description = null;
+    this.content = null;
   }
 }

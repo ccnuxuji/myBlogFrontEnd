@@ -6,10 +6,10 @@ import {TopicStartComponent} from './topic-start/topic-start.component';
 import {TopicEditComponent} from './topic-edit/topic-edit.component';
 import {TopicDetailComponent} from './topic-detail/topic-detail.component';
 import {ProductEditComponent} from './topic-detail/product-edit/product-edit.component';
-import {AuthGuard} from '../auth/auth.guard';
 import {TopicsResolverService} from './topics-resolver.service.';
 import {ProductsResolverService} from './topic-detail/products-resolver.service';
 import {AuthAdminGuard} from '../auth/auth-admin.guard';
+import {ProductsBytopicResolverService} from './topic-detail/products-bytopic-resolver.service';
 
 const routes: Routes = [
   {
@@ -30,17 +30,23 @@ const routes: Routes = [
       },
       {
         path: ':topicId',
+        resolve: {
+          TopicsResolverService,
+          products: ProductsBytopicResolverService
+        },
         component: TopicDetailComponent
       },
       {
         path: ':topicId/edit',
+        resolve: [TopicsResolverService],
         canActivate: [AuthAdminGuard],
         component: TopicEditComponent
       },
-      // {
-      //   path: ':topicId/:productId',
-      //   component: ProductEditComponent
-      // },
+      {
+        path: ':topicId/:productId',
+        canActivate: [AuthAdminGuard],
+        component: ProductEditComponent
+      },
       {
         path: ':topicId/new',
         canActivate: [AuthAdminGuard],

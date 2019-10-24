@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+
 import {ProductService} from '../product.service';
 import {Product} from '../../../shared/product.model';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-product-edit',
@@ -12,6 +13,7 @@ import {Subscription} from 'rxjs';
 })
 export class ProductEditComponent implements OnInit, OnDestroy {
   productId: number;
+  topicId: number;
   editMode = false;
   productForm: FormGroup;
   subscription = new Subscription();
@@ -23,9 +25,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.productId = +params.productId;
-      console.log(this.productId);
+      this.topicId = +params.topicId;
       this.editMode = params.productId !== 'new';
-      console.log(this.editMode);
       this.initForm();
     });
   }
@@ -50,7 +51,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   initForm() {
     let productId = null;
     let productName = '';
-    let productTid = null;
+    let productTid = this.topicId;
     let productOrd = null;
     let productThumbnail = '';
     let productDescription = '';
