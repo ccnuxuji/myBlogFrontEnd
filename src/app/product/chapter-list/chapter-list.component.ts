@@ -15,6 +15,7 @@ export class ChapterListComponent implements OnInit, OnDestroy {
   @Input() productId: number;
   chapters: Chapter[];
   userSub = new Subscription();
+  chaptersSub = new Subscription();
   isAdminLogin = false;
 
   constructor(private chapterService: ChapterService,
@@ -24,6 +25,10 @@ export class ChapterListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.chapters = this.chapterService.getChapters();
+
+    this.chaptersSub = this.chapterService.chaptersChanged.subscribe(chapters => {
+      this.chapters = chapters;
+    });
 
     this.userSub = this.authService.user.subscribe(user => {
       this.isAdminLogin = !!user && user.name === 'ccnuxuji';
@@ -36,6 +41,7 @@ export class ChapterListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    this.chaptersSub.unsubscribe();
   }
 
 }

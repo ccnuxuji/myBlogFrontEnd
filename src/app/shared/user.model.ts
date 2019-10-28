@@ -1,8 +1,6 @@
 export class User {
 
-  constructor(public name: string) {}
-
-  constructor() {
-    this.name = null;
+  constructor(public name?: string) {
+    this.name = !!name ? name : null;
   }
 }

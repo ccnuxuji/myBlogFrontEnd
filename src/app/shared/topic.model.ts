@@ -1,10 +1,12 @@
 export class Topic {
 
-  constructor(public id: number, public ord: number, public name: string) {}
+  constructor();
 
-  constructor() {
-    this.id = null;
-    this.name = null;
-    this.ord = null;
+  constructor(id: number, ord: number, name: string);
+
+  constructor(public id?: number, public ord?: number, public name?: string) {
+    this.id = !!id ? id : null;
+    this.ord = !!ord ? ord : null;
+    this.name = !!name ? name : null;
   }
 }

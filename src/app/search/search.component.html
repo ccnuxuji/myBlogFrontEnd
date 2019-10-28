@@ -1,10 +1,14 @@
-<ul>
+<ul *ngFor="let i of searchResult;let idx = index">
+  <a (click)="jumpToStep(i)"
+  >{{ i.chapter.product.topic.name }}
+    -> {{ i.chapter.product.name }}
+    -> {{ i.chapter.name }}</a>
   <quill-view-html
-    *ngFor="let i of searchResult"
     [content]="i.content"
     format="text"
     theme="snow"
-  ></quill-view-html></ul>
+  ></quill-view-html>
+</ul>
 
 
 <div class="pageDiv">

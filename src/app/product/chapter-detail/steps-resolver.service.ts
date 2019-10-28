@@ -13,8 +13,10 @@ export class StepsResolverService implements Resolve<Step[]> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Step[]> | Promise<Step[]> | Step[] {
-    const id = state.url.split('/')[3];
+    const id = state.url.split(/[/?]/)[3];
     console.log('进来了');
+    console.log(state.url.split(/[/?]/));
+    console.log('续集');
     return this.stepService.fetchStepsByChapter(+id);
   }
 }

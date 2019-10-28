@@ -20,6 +20,7 @@ export class TopicStartComponent implements OnInit {
   ngOnInit() {
     this.topics = this.topicService.getTopics();
     this.products = this.productService.getProducts();
+    console.log(this.products);
   }
 
   getProductsByTopic(topic: Topic) {

@@ -4,6 +4,7 @@ import {ActivatedRoute, Params, Router, RouterStateSnapshot} from '@angular/rout
 
 import {ChapterService} from '../chapter-list/chapter.service';
 import {Chapter} from '../../shared/chapter.model';
+import {ResponseData} from '../../topics/topic-edit/topic-edit.component';
 
 @Component({
   selector: 'app-chapter-edit',
@@ -34,25 +35,25 @@ export class ChapterEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.chapterForm.value);
     if (this.editMode) {
       this.chapterService.updateChapter(this.chapterForm.value)
         .subscribe(res => {
-          console.log(res);
+          this.chapterService.fetchChaptersByProduct(this.productId).subscribe();
+          this.onCancel();
         });
     } else {
       this.chapterService.addChapter(this.chapterForm.value)
         .subscribe(res => {
-          console.log(res);
+          this.chapterService.fetchChaptersByProduct(this.productId).subscribe();
+          this.onCancel();
         });
     }
-    this.onCancel();
   }
 
   onDelete() {
     this.chapterService.deleteChapter(this.chapterId)
       .subscribe(res => {
-        console.log(res);
+        this.chapterService.fetchChaptersByProduct(this.productId).subscribe();
       });
     this.onCancel();
   }
@@ -62,36 +63,28 @@ export class ChapterEditComponent implements OnInit {
   }
 
   initForm() {
-    let chapterId = null;
-    let chapterName = '';
-    let chapterPid = this.productId;
-    let chapterOrd = null;
-    let chapterDescription = '';
-
+    let chapter = new Chapter();
+    chapter.pid = this.productId;
     if (this.editMode) {
-      this.chapterService.getChapterById(this.chapterId)
-        .subscribe((chapter: Chapter) => {
-          chapterId = chapter.id;
-          chapterName = chapter.name;
-          chapterPid = chapter.pid;
-          chapterOrd = chapter.ord;
-          chapterDescription = chapter.description;
+      this.chapterService.getChapter(this.chapterId)
+        .subscribe((res: ResponseData) => {
+          chapter = res.data;
           this.chapterForm = new FormGroup({
-            id: new FormControl(chapterId),
-            name: new FormControl(chapterName, Validators.required),
-            pid: new FormControl(chapterPid, Validators.required),
-            ord: new FormControl(chapterOrd, Validators.required),
-            description: new FormControl(chapterDescription)
+            id: new FormControl({value: chapter.id, disabled: true}),
+            name: new FormControl(chapter.name, Validators.required),
+            pid: new FormControl({value: chapter.pid, disabled: true}, Validators.required),
+            ord: new FormControl(chapter.ord, Validators.required),
+            description: new FormControl(chapter.description)
           });
         });
     }
 
     this.chapterForm = new FormGroup({
-      id: new FormControl(chapterId),
-      name: new FormControl(chapterName, Validators.required),
-      pid: new FormControl(chapterPid, Validators.required),
-      ord: new FormControl(chapterOrd, Validators.required),
-      description: new FormControl(chapterDescription)
+      id: new FormControl({value: chapter.id, disabled: true}),
+      name: new FormControl(chapter.name, Validators.required),
+      pid: new FormControl({value: chapter.pid, disabled: true}, Validators.required),
+      ord: new FormControl(chapter.ord, Validators.required),
+      description: new FormControl(chapter.description)
     });
   }
 

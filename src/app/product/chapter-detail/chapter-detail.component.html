@@ -1,7 +1,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div id="head">
-      <p>{{ currChapterName }}</p>
+      <p>{{ currChapter.name }}</p>
       <button class="btn btn-success"
               *ngIf="isAdminLogin"
               (click)="editChapter()">Eidt
@@ -13,14 +13,16 @@
       *ngFor="let i of steps;"
       [step]="i"
       (currStep)="clickCurrentStep($event)"
+      [id]="i.id"
     ></app-step-item>
   </div>
 </div>
 
 <div id="editor" *ngIf="isAdminLogin">
-  <app-editor (editorContentChanged)="getContent($event)"
+  <app-editor (editorContentCanged)="getContent($event)"
               [contentObject]="currStep.content"></app-editor>
   <br>
+
   <button class="btn btn-success"
           (click)="newStepClick()">提交
   </button>

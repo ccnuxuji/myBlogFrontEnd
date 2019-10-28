@@ -3,6 +3,7 @@ import {Step} from '../shared/step.model';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {tap} from 'rxjs/operators';
+import {SearchResult} from './search.component';
 
 
 export interface SearchResponseData {
@@ -11,7 +12,7 @@ export interface SearchResponseData {
   number: number;
   totalElements: number;
   size: number;
-  content: Step[];
+  content: SearchResult[];
   first: boolean;
   last: boolean;
   navigatepageNums: number[];

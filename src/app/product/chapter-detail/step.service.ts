@@ -17,32 +17,33 @@ export class StepService {
 
   addStep(step: Step) {
     return this.http.post(
-      environment.API + '/steps',
+      environment.API + '/step',
       step
     );
   }
 
   deleteStep(stepId: number) {
     return this.http.delete(
-      environment.API +  '/steps/' + String(stepId)
+      environment.API +  '/step/' + String(stepId)
     );
   }
 
   updateStep(step: Step) {
     return this.http.put(
-      environment.API + '/steps',
+      environment.API + '/step',
       step
     );
   }
 
   getStep(stepId: number) {
     return this.http.get(
-      environment.API + '/steps/' + String(stepId)
+      environment.API + '/step/' + String(stepId)
     );
   }
 
   fetchStepsByChapter(chapterId: number) {
     const para = {cid: String(chapterId)};
+    console.log(chapterId);
     return this.http.get<Step[]>(environment.API + '/steps_chapter', {params: para})
       .pipe(
         tap(res => {

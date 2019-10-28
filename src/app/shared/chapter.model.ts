@@ -1,14 +1,16 @@
 export class Chapter {
 
-  constructor(public id: number, public pid: number, public ord: number,
-              public name: string, public description: string) {
-  }
+  constructor();
 
-  constructor() {
-    this.id = null;
-    this.pid = null;
-    this.ord = null;
-    this.name = null;
-    this.description = null;
+  constructor(id: number, pid: number, ord: number,
+              name: string, description: string);
+
+  constructor(public id?: number, public pid?: number, public ord?: number,
+              public name?: string, public description?: string) {
+    this.id = !!id ? id : null;
+    this.pid = !!pid ? pid : null;
+    this.ord = !!ord ? ord : null;
+    this.name = !!name ? name : null;
+    this.description = !!description ? description : null;
   }
 }

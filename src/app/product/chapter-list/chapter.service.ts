@@ -17,27 +17,27 @@ export class ChapterService {
 
   addChapter(chapter: Chapter) {
     return this.http.post(
-      environment.API + '/chapters',
+      environment.API + '/chapter',
       chapter
     );
   }
 
   deleteChapter(chapterId: number) {
     return this.http.delete(
-      environment.API + '/chapterDel/' + String(chapterId)
+      environment.API + '/chapter/' + String(chapterId)
     );
   }
 
   updateChapter(chapter: Chapter) {
     return this.http.put(
-      environment.API + '/chapters',
+      environment.API + '/chapter',
       chapter
     );
   }
 
-  getChapterById(chapterId: number) {
-    return this.http.get<Chapter>(
-      environment.API + '/chapters/' + String(chapterId)
+  getChapter(chapterId: number) {
+    return this.http.get(
+      environment.API + '/chapter/' + String(chapterId)
     );
   }
 

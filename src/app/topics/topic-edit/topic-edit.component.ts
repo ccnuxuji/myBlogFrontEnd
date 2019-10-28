@@ -70,7 +70,7 @@ export class TopicEditComponent implements OnInit {
         .subscribe((res: ResponseData) => {
           topic = res.data;
           this.topicForm = new FormGroup({
-            id: new FormControl(topic.id),
+            id: new FormControl({value: topic.id, disabled: true}),
             name: new FormControl(topic.name, Validators.required),
             ord: new FormControl(topic.ord, Validators.required)
           });
@@ -78,7 +78,7 @@ export class TopicEditComponent implements OnInit {
     }
 
     this.topicForm = new FormGroup({
-      id: new FormControl(topic.id),
+      id: new FormControl({value: topic.id, disabled: true}),
       name: new FormControl(topic.name, Validators.required),
       ord: new FormControl(topic.ord, Validators.required)
     });

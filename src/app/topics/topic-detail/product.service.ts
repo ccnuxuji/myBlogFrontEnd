@@ -21,7 +21,7 @@ export class ProductService {
   }
 
   deleteProduct(productId: number) {
-    return this.http.delete(environment.API + '/productDel/' + productId);
+    return this.http.delete(environment.API + '/product/' + productId);
   }
 
   updateProduct(product: Product) {
@@ -36,7 +36,12 @@ export class ProductService {
     const para = {tid: String(topicId)};
     return this.http.get<Product[]>(
       environment.API + '/products_topic',
-      {params: para});
+      {params: para})
+      .pipe(
+        tap(products => {
+          this.setProducts(products);
+        })
+      );
   }
 
   fetchProducts() {
@@ -49,7 +54,13 @@ export class ProductService {
   }
 
   getProductsByTopic(topic: Topic) {
-
+    const products: Product[] = [];
+    this.products.forEach(value => {
+      if (value.topic.id === topic.id) {
+        products.push(value);
+      }
+    });
+    return products;
   }
 
   setProducts(products: Product[]) {

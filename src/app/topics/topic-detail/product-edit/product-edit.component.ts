@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
 
 import {ProductService} from '../product.service';
 import {Product} from '../../../shared/product.model';
+import {ResponseData} from '../../topic-edit/topic-edit.component';
 
 @Component({
   selector: 'app-product-edit',
@@ -16,7 +16,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   topicId: number;
   editMode = false;
   productForm: FormGroup;
-  subscription = new Subscription();
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -31,16 +30,28 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     });
   }
 
-
   onSubmit() {
-    console.log(this.productForm.value);
-    this.productService.updateProduct(this.productForm.value);
-    this.onCancel();
+    if (this.editMode) {
+      this.productService.updateProduct(this.productForm.value)
+        .subscribe(res => {
+          this.productService.fetchProductsByTopic(this.topicId).subscribe();
+          this.onCancel();
+        });
+    } else {
+      this.productService.addProduct(this.productForm.value)
+        .subscribe(res => {
+          this.productService.fetchProductsByTopic(this.topicId).subscribe();
+          this.onCancel();
+        });
+    }
   }
 
   onDelete() {
-    this.productService.deleteProduct(this.productId);
-    this.onCancel();
+    this.productService.deleteProduct(this.productId).subscribe(res => {
+      this.productService.fetchProductsByTopic(this.topicId).subscribe();
+      // this.router.navigate(['../../'], {relativeTo: this.route});
+      this.onCancel();
+    });
   }
 
   onCancel() {
@@ -49,56 +60,33 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
 
   initForm() {
-    let productId = null;
-    let productName = '';
-    let productTid = this.topicId;
-    let productOrd = null;
-    let productThumbnail = '';
-    let productDescription = '';
-
+    let product = new Product();
+    product.tid = this.topicId;
 
     if (this.editMode) {
-      console.log('test');
-      this.productService.fetchProductById(this.productId);
-      let product: Product = this.productService.product;
-      this.subscription = this.productService.productChanged.subscribe(data => {
-        product = data;
-        productId = product.id;
-        productName = product.name;
-        productTid = product.tid;
-        productOrd = product.ord;
-        productThumbnail = product.thumbnail;
-        productDescription = product.description;
+      this.productService.getProduct(this.productId).subscribe((res: ResponseData) => {
+        product = res.data;
         this.productForm = new FormGroup({
-          id: new FormControl(productId),
-          name: new FormControl(productName, Validators.required),
-          tid: new FormControl(productTid, Validators.required),
-          ord: new FormControl(productOrd, Validators.required),
-          thumbnail: new FormControl(productThumbnail),
-          description: new FormControl(productDescription)
+          id: new FormControl({value: product.id, disabled: true}),
+          name: new FormControl(product.name, Validators.required),
+          tid: new FormControl({value: product.tid, disabled: true}, Validators.required),
+          ord: new FormControl(product.ord, Validators.required),
+          thumbnail: new FormControl(product.thumbnail),
+          description: new FormControl(product.description)
         });
       });
-      console.log(product);
-      productId = product.id;
-      productName = product.name;
-      productTid = product.tid;
-      productOrd = product.ord;
-      productThumbnail = product.thumbnail;
-      productDescription = product.description;
     }
-
     this.productForm = new FormGroup({
-      id: new FormControl(productId),
-      name: new FormControl(productName, Validators.required),
-      tid: new FormControl(productTid, Validators.required),
-      ord: new FormControl(productOrd, Validators.required),
-      thumbnail: new FormControl(productThumbnail),
-      description: new FormControl(productDescription)
+      id: new FormControl({value: product.id, disabled: true}),
+      name: new FormControl(product.name, Validators.required),
+      tid: new FormControl({value: product.tid, disabled: true}, Validators.required),
+      ord: new FormControl(product.ord, Validators.required),
+      thumbnail: new FormControl(product.thumbnail),
+      description: new FormControl(product.description)
     });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
 }

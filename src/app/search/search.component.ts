@@ -1,7 +1,26 @@
 import {Component, OnInit} from '@angular/core';
 import {SearchResponseData, SearchService} from './search.service';
-import {Step} from '../shared/step.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+
+export interface SearchResult {
+  id: number;
+  name: string;
+  description: string;
+  content: string;
+  chapter: {
+    id: number;
+    name: string;
+    product: {
+      id: number;
+      name: string;
+      topic: {
+        id: number;
+        name: string
+      };
+    };
+  };
+}
+
 
 @Component({
   selector: 'app-search',
@@ -12,11 +31,12 @@ export class SearchComponent implements OnInit {
   keyword: string;
   searchResponseData: SearchResponseData;
   navigatepageNums: number[];
-  searchResult: Step[];
+  searchResult: SearchResult[];
   currPage: number;
 
   constructor(private route: ActivatedRoute,
-              private searchService: SearchService) {
+              private searchService: SearchService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -55,5 +75,10 @@ export class SearchComponent implements OnInit {
   jumpByNumber(num: number) {
     this.getSearchResult(this.keyword, num);
   }
+
+  jumpToStep(i: SearchResult) {
+    this.router.navigate(['/product/' + i.chapter.product.id + '/' + i.chapter.id]);
+  }
+
 
 }
