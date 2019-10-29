@@ -38,6 +38,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
           this.onCancel();
         });
     } else {
+      console.log(this.productForm.value);
       this.productService.addProduct(this.productForm.value)
         .subscribe(res => {
           this.productService.fetchProductsByTopic(this.topicId).subscribe();
@@ -63,13 +64,15 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     let product = new Product();
     product.tid = this.topicId;
 
+
     if (this.editMode) {
       this.productService.getProduct(this.productId).subscribe((res: ResponseData) => {
         product = res.data;
+        product.tid = this.topicId;
         this.productForm = new FormGroup({
-          id: new FormControl({value: product.id, disabled: true}),
+          id: new FormControl(product.id),
           name: new FormControl(product.name, Validators.required),
-          tid: new FormControl({value: product.tid, disabled: true}, Validators.required),
+          tid: new FormControl(product.tid, Validators.required),
           ord: new FormControl(product.ord, Validators.required),
           thumbnail: new FormControl(product.thumbnail),
           description: new FormControl(product.description)
@@ -77,13 +80,14 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       });
     }
     this.productForm = new FormGroup({
-      id: new FormControl({value: product.id, disabled: true}),
+      id: new FormControl(product.id),
       name: new FormControl(product.name, Validators.required),
-      tid: new FormControl({value: product.tid, disabled: true}, Validators.required),
+      tid: new FormControl(product.tid, Validators.required),
       ord: new FormControl(product.ord, Validators.required),
       thumbnail: new FormControl(product.thumbnail),
       description: new FormControl(product.description)
     });
+
   }
 
   ngOnDestroy(): void {

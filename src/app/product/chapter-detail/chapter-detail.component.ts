@@ -25,6 +25,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   steps: Step[] = [];
   editorContent: string;
   currStep: Step = new Step();
+  currStepName = this.currStep.name;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -66,6 +67,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   newStepClick() {
     const step = new Step();
     step.cid = this.chapterId;
+    step.name = this.currStepName;
     step.content = this.editorContent;
     this.stepService.addStep(step).subscribe(res => {
       this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
@@ -76,6 +78,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
     const step = new Step();
     step.id = this.currStep.id
     step.cid = this.chapterId;
+    step.name = this.currStepName;
     step.content = this.editorContent;
     this.stepService.updateStep(step).subscribe(res => {
       this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
@@ -90,6 +93,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
 
   clickCurrentStep(event: Step) {
     this.currStep = event;
+    this.currStepName = event.name;
   }
 
   ngOnDestroy(): void {

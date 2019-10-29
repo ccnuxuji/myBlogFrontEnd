@@ -1,11 +1,29 @@
 <div class="row">
   <div class="col-xs-12">
     <ul class="list-group">
-      <app-topic-item
-        class="list-group-item"
+    <!--  <app-topic-item
         *ngFor="let i of topics;"
         [topic]="i"
-      ></app-topic-item>
+        class="list-group-item"
+      ></app-topic-item>-->
+
+
+
+      <a
+        style="color: #428BCA"
+        class="list-group-item disabled"
+        routerLinkActive="active">
+        <span class="glyphicon glyphicon-list"></span>
+        <span style="color: black">    All Topics</span>
+      </a>
+
+      <a
+        *ngFor="let i of topics;"
+        style="cursor: pointer"
+        [routerLink]="[i.id]"
+        class="list-group-item"
+        routerLinkActive="active">{{ i.name }}
+      </a>
     </ul>
   </div>
 </div>

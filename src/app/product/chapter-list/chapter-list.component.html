@@ -1,11 +1,28 @@
 <div class="row">
   <div class="col-xs-12">
     <ul class="list-group">
-      <app-chapter-item
+<!--      <app-chapter-item
         class="list-group-item"
         *ngFor="let i of chapters;"
         [chapter]="i">
-      </app-chapter-item>
+      </app-chapter-item>-->
+
+      <a
+        style="color: #428BCA"
+        class="list-group-item disabled"
+        routerLinkActive="active">
+        <span class="glyphicon glyphicon-list"></span>
+        <span style="color: black">    {{ product.name }}</span>
+      </a>
+
+      <a
+        *ngFor="let i of chapters;"
+        style="cursor: pointer"
+        [routerLink]="[i.id]"
+        routerLinkActive="active"
+        class="list-group-item">
+        <p class="list-group-item-text">{{ i.name }}</p>
+      </a>
     </ul>
   </div>
 </div>

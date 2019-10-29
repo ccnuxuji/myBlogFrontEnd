@@ -1,6 +1,20 @@
 <div class="panel panel-default"
      *ngFor="let i of topics; let idx = index">
-  <div class="panel-heading">{{ i.name }}</div>
+  <!--<div style="float: left; color: #428BCA" class="panel-heading">
+    <span class="glyphicon glyphicon-list"></span>
+    <span  style="color: black">  {{ i.name }}</span>
+  </div>-->
+
+  <div class="panel-heading">
+    <div id="head">
+      <div style="float: left; color: #428BCA">
+        <span class="glyphicon glyphicon-list"></span>
+        <span style="color: black">  {{ i.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="panel-heading">{{ i.name }}</div>-->
   <div class="panel-body">
     <app-product-item
       *ngFor="let j of getProductsByTopic(i);"

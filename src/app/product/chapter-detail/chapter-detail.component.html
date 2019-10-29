@@ -1,25 +1,37 @@
 <div class="panel panel-default">
+
   <div class="panel-heading">
     <div id="head">
-      <p>{{ currChapter.name }}</p>
-      <button class="btn btn-success"
-              *ngIf="isAdminLogin"
-              (click)="editChapter()">Eidt
-      </button>
+      <div style="float: left; color: #428BCA">
+        <span class="glyphicon glyphicon-list"></span>
+        <span style="color: black">  {{ currChapter.name }}</span>
+      </div>
+      <div style="float: right">
+        <button class="btn btn-success"
+                *ngIf="isAdminLogin"
+                (click)="editChapter()">Eidt</button>
+      </div>
     </div>
   </div>
+
+
   <div class="panel-body">
     <app-step-item
       *ngFor="let i of steps;"
       [step]="i"
       (currStep)="clickCurrentStep($event)"
-      [id]="i.id"
     ></app-step-item>
   </div>
 </div>
 
+<div *ngIf="isAdminLogin">
+  <label for="sname"> Step Name:</label>
+  <input id="sname" [(ngModel)]="currStepName">
+</div>
+
+
 <div id="editor" *ngIf="isAdminLogin">
-  <app-editor (editorContentCanged)="getContent($event)"
+  <app-editor (editorContentChanged)="getContent($event)"
               [contentObject]="currStep.content"></app-editor>
   <br>
 

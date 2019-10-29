@@ -70,9 +70,9 @@ export class ChapterEditComponent implements OnInit {
         .subscribe((res: ResponseData) => {
           chapter = res.data;
           this.chapterForm = new FormGroup({
-            id: new FormControl({value: chapter.id, disabled: true}),
+            id: new FormControl(chapter.id),
             name: new FormControl(chapter.name, Validators.required),
-            pid: new FormControl({value: chapter.pid, disabled: true}, Validators.required),
+            pid: new FormControl(this.productId, Validators.required),
             ord: new FormControl(chapter.ord, Validators.required),
             description: new FormControl(chapter.description)
           });
@@ -80,9 +80,9 @@ export class ChapterEditComponent implements OnInit {
     }
 
     this.chapterForm = new FormGroup({
-      id: new FormControl({value: chapter.id, disabled: true}),
+      id: new FormControl(chapter.id),
       name: new FormControl(chapter.name, Validators.required),
-      pid: new FormControl({value: chapter.pid, disabled: true}, Validators.required),
+      pid: new FormControl(this.productId, Validators.required),
       ord: new FormControl(chapter.ord, Validators.required),
       description: new FormControl(chapter.description)
     });

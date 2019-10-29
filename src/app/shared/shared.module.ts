@@ -8,6 +8,7 @@ import {DropdownDirective} from './dropdown.directive';
 import {QuillModule} from 'ngx-quill';
 import {AlertComponent} from './alert/alert.component';
 import {PlaceholderDirective} from './placeholder/placeholder.directive';
+import { HighlightPipe } from './highlight.pipe';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {PlaceholderDirective} from './placeholder/placeholder.directive';
     DropdownDirective,
     AlertComponent,
     PlaceholderDirective,
+    HighlightPipe,
   ],
   exports: [
     EditorComponent,
@@ -26,7 +28,8 @@ import {PlaceholderDirective} from './placeholder/placeholder.directive';
     QuillModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HighlightPipe
   ],
   imports: [
     CommonModule,

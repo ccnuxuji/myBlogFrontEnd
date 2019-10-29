@@ -1,8 +1,43 @@
+<div class="pageDiv">
+  <nav>
+    <ul class="pagination">
+      <li class="{ disabled: searchResponseData.first }">
+        <a (click)="jump('first')">«</a>
+      </li>
+      <li class="{ disabled: !searchResponseData.hasPrevious }">
+        <a (click)="jump('pre')">‹</a>
+      </li>
+
+      <li  *ngFor="let i of navigatepageNums" [ngClass]="{'active' : currPage === i}">
+        <a (click)="jumpByNumber(i-1)">
+          {{i}}
+        </a>
+      </li>
+
+      <li :class="{ disabled: !searchResponseData.hasNext }">
+        <a (click)="jump('next')">›</a>
+      </li>
+      <li :class="{ disabled: searchResponseData.last }">
+        <a (click)="jump('last')"> »</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
 <ul *ngFor="let i of searchResult;let idx = index">
-  <a (click)="jumpToStep(i)"
-  >{{ i.chapter.product.topic.name }}
+
+  <a (click)="jumpToStep(i)">
+    <span class="pull-left">
+  <img
+    [src]="i.chapter.product.thumbnail"
+    alt="{{ i.chapter.product.name }}"
+    class="img-responsive"
+    style="max-height: 20px;">
+  </span>
+    {{ i.chapter.product.topic.name }}
     -> {{ i.chapter.product.name }}
-    -> {{ i.chapter.name }}</a>
+    -> {{ i.chapter.name }}
+    -> {{ i.name }}</a>
   <quill-view-html
     [content]="i.content"
     format="text"

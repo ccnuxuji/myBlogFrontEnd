@@ -4,7 +4,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Chapter} from '../../shared/chapter.model';
 import {ChapterService} from './chapter.service';
 import {Subscription} from 'rxjs';
-import {AuthService} from '../../auth/auth.service';
+import {AuthResponseData, AuthService} from '../../auth/auth.service';
+import {ProductService} from '../../topics/topic-detail/product.service';
+import {Product} from '../../shared/product.model';
 
 @Component({
   selector: 'app-chapter-list',
@@ -13,6 +15,7 @@ import {AuthService} from '../../auth/auth.service';
 })
 export class ChapterListComponent implements OnInit, OnDestroy {
   @Input() productId: number;
+  product: Product;
   chapters: Chapter[];
   userSub = new Subscription();
   chaptersSub = new Subscription();
@@ -21,10 +24,15 @@ export class ChapterListComponent implements OnInit, OnDestroy {
   constructor(private chapterService: ChapterService,
               private route: ActivatedRoute,
               private router: Router,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private productService: ProductService) { }
 
   ngOnInit() {
     this.chapters = this.chapterService.getChapters();
+
+    this.productService.getProduct(this.productId).subscribe((res: AuthResponseData) => {
+      this.product = res.data;
+    });
 
     this.chaptersSub = this.chapterService.chaptersChanged.subscribe(chapters => {
       this.chapters = chapters;

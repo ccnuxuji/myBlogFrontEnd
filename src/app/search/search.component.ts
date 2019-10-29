@@ -13,6 +13,7 @@ export interface SearchResult {
     product: {
       id: number;
       name: string;
+      thumbnail: string
       topic: {
         id: number;
         name: string
