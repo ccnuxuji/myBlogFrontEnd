@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+
 import {TopicService} from '../topic.service';
 import {Topic} from '../../shared/topic.model';
 import {Product} from '../../shared/product.model';
@@ -17,14 +18,9 @@ export class TopicStartComponent implements OnInit {
               private productService: ProductService) { }
 
   ngOnInit() {
-    this.topicService.fetchTopics();
-    this.topicService.topicsChanged.subscribe(topics => {
-      this.topics = this.topicService.getTopics();
-    });
-    this.productService.fetchProducts();
-    this.productService.productsChanged.subscribe(products => {
-      this.products = this.productService.getProducts();
-    });
+    this.topics = this.topicService.getTopics();
+    this.products = this.productService.getProducts();
+    console.log(this.products);
   }
 
   getProductsByTopic(topic: Topic) {

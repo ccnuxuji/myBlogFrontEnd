@@ -18,7 +18,6 @@ export class StepItemComponent implements OnInit {
 
   onClick() {
     this.currStep.emit(this.step);
-    // this.stepEl.nativeElement.style.backgroundColor = 'grey';
   }
 
 }

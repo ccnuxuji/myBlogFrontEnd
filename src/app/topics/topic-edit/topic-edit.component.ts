@@ -1,7 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+
 import {TopicService} from '../topic.service';
+import {Topic} from '../../shared/topic.model';
+
+export interface ResponseData {
+  code: number;
+  data: any;
+  message: string;
+}
 
 @Component({
   selector: 'app-topic-edit',
@@ -27,49 +35,52 @@ export class TopicEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.topicForm.value);
-    this.topicService.updateTopic(this.topicForm.value);
-    this.onCancel();
+    if (this.editMode) {
+      this.topicService.updateTopic(this.topicForm.value)
+        .subscribe(res => {
+          this.topicService.fetchTopics().subscribe();
+          // this.onCancel();
+        });
+    } else {
+      this.topicService.addTopic(this.topicForm.value)
+        .subscribe(res => {
+          this.topicService.fetchTopics().subscribe();
+          // this.onCancel();
+      });
+    }
   }
 
   onDelete() {
-    this.topicService.deleteTopic(this.topicId);
-    this.onCancel();
+    this.topicService.deleteTopic(this.topicId)
+      .subscribe(res => {
+        this.topicService.fetchTopics().subscribe();
+        this.onCancel();
+    });
   }
 
   onCancel() {
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['../../'], {relativeTo: this.route});
   }
 
   private initForm() {
-    let topicId = null;
-    let topicName = '';
-    let topicRank = null;
+    let topic = new Topic();
 
     if (this.editMode) {
-      this.topicService.fetchTopics();
-      let topic = this.topicService.getTopicById(this.topicId);
-      // console.log(topic);
-      this.topicService.topicsChanged.subscribe(topics => {
-        topic = this.topicService.getTopicById(this.topicId);
-        topicId = topic.id;
-        topicName = topic.name;
-        topicRank = topic.ord;
-        this.topicForm = new FormGroup({
-          id: new FormControl(topicId),
-          name: new FormControl(topicName, Validators.required),
-          ord: new FormControl(topicRank, Validators.required)
+      this.topicService.getTopic(this.topicId)
+        .subscribe((res: ResponseData) => {
+          topic = res.data;
+          this.topicForm = new FormGroup({
+            id: new FormControl(topic.id),
+            name: new FormControl(topic.name, Validators.required),
+            ord: new FormControl(topic.ord, Validators.required)
+          });
         });
-      });
-      topicId = topic.id;
-      topicName = topic.name;
-      topicRank = topic.ord;
     }
 
     this.topicForm = new FormGroup({
-      id: new FormControl(topicId),
-      name: new FormControl(topicName, Validators.required),
-      ord: new FormControl(topicRank, Validators.required)
+      id: new FormControl(topic.id),
+      name: new FormControl(topic.name, Validators.required),
+      ord: new FormControl(topic.ord, Validators.required)
     });
   }
 

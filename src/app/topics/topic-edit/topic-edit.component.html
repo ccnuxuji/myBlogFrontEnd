@@ -17,7 +17,22 @@
             <button type="button"
                     class="btn btn-danger"
                     (click)="onDelete()"
+                    [disabled]="!editMode"
             >Delete</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label for="name">Topic Id</label>
+              <input
+                type="text"
+                id="id"
+                formControlName="id"
+                class="form-control"
+              />
+            </div>
           </div>
         </div>
 

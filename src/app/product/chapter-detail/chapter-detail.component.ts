@@ -1,10 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Params, Router, RouterStateSnapshot} from '@angular/router';
+import {Observable, Subscription} from 'rxjs';
+
 import {Step} from '../../shared/step.model';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Chapter} from '../../shared/chapter.model';
 import {StepService} from './step.service';
+import {AuthService} from '../../auth/auth.service';
 import {ChapterService} from '../chapter-list/chapter.service';
+import {ResponseData} from '../../topics/topic-edit/topic-edit.component';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chapter-detail',
@@ -12,38 +16,46 @@ import {ChapterService} from '../chapter-list/chapter.service';
   styleUrls: ['./chapter-detail.component.css']
 })
 export class ChapterDetailComponent implements OnInit, OnDestroy {
-  subscriptionStep  = new Subscription();
-  subscriptionChapter  = new Subscription();
+  userSub = new Subscription();
+  stepSub = new Subscription();
+  isAdminLogin = false;
 
-  chapter: Chapter = new Chapter(-1, -1, null, 'loading', '');
   chapterId: number;
+  currChapter = new Chapter();
   steps: Step[] = [];
   editorContent: string;
-  currStep: Step = new Step(-1, -1, '', '', '');
+  currStep: Step = new Step();
+  currStepName = this.currStep.name;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private stepService: StepService,
+              private authService: AuthService,
               private chapterService: ChapterService,
                ) { }
 
   ngOnInit() {
+    this.steps = this.stepService.getSteps();
+
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAdminLogin = !!user && user.name === 'ccnuxuji';
+    });
+
     this.route.params.subscribe(
       (params: Params) => {
         this.chapterId = +params.chapterId;
-        this.stepService.fetchStepsByChapter(this.chapterId);
-        this.subscriptionStep = this.stepService.stepsChanged.subscribe(
-          steps => {
-            this.steps = steps;
+        this.chapterService.getChapter(this.chapterId)
+          .subscribe((res: ResponseData) => {
+            this.currChapter = res.data;
+            this.stepSub = this.stepService.stepsChanged.subscribe(steps => {
+              this.steps = steps;
+            });
           });
-        this.chapter = this.chapterService.getChapterById(this.chapterId);
-        this.subscriptionChapter = this.chapterService.chaptersChanged.subscribe(chapters => {
-          this.chapter = this.chapterService.getChapterById(this.chapterId);
-        });
       });
+
   }
 
-  onClick() {
+  editChapter() {
     this.router.navigate(['edit'], {relativeTo: this.route});
   }
 
@@ -53,36 +65,39 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   }
 
   newStepClick() {
-    const step = {
-      name: '',
-      description: '',
-      cid: this.chapterId,
-      content: this.editorContent
-    };
-    this.stepService.submitStep(step);
-    location.reload();
+    const step = new Step();
+    step.cid = this.chapterId;
+    step.name = this.currStepName;
+    step.content = this.editorContent;
+    this.stepService.addStep(step).subscribe(res => {
+      this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
+    });
   }
 
   editStepClick() {
-    const step = {
-      id: this.currStep.id,
-      name: '',
-      description: '',
-      cid: this.chapterId,
-      content: this.editorContent
-    };
-    this.stepService.submitStep(step);
-    console.log(step.id);
-    location.reload();
+    const step = new Step();
+    step.id = this.currStep.id
+    step.cid = this.chapterId;
+    step.name = this.currStepName;
+    step.content = this.editorContent;
+    this.stepService.updateStep(step).subscribe(res => {
+      this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
+    });
+  }
+
+  deleteStepClick() {
+    this.stepService.deleteStep(this.currStep.id).subscribe(res => {
+      this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
+    });
   }
 
   clickCurrentStep(event: Step) {
     this.currStep = event;
+    this.currStepName = event.name;
   }
 
   ngOnDestroy(): void {
-    this.subscriptionStep.unsubscribe();
-    this.subscriptionChapter.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
 }

@@ -5,4 +5,12 @@ h2 {
 
 a {
   margin-bottom: 10px;
+  height: 120px;
 }
+
+#div1 {
+  color: #bbb;
+  border-radius:30px;
+}
+
+a:hover{text-decoration:none}

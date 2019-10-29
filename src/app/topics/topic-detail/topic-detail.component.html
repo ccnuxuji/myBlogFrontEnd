@@ -1,21 +1,28 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div id="head">
-      <p>{{ topic.name }}</p>
-      <button class="btn btn-success" (click)="onClick()">Eidt</button>
+      <div style="float: left; color: #428BCA">
+        <span class="glyphicon glyphicon-list"></span>
+        <span style="color: black">  {{ topic.name }}</span>
+      </div>
+      <div style="float: right">
+        <button class="btn btn-success"
+                   *ngIf="isAdminLogin"
+                   (click)="onClick()">Eidt</button>
+      </div>
     </div>
-
   </div>
+
   <div class="panel-body">
       <app-product-item
-        *ngFor="let i of products;"
+        *ngFor="let i of products"
         [product]="i"
-        [isOntopic]="true"
       ></app-product-item>
 
     <div class="col-xs-6 col-md-3" >
       <div class="caption"
            (click)="newProduct()"
+           *ngIf="isAdminLogin"
            routerLinkActive="active"
            style="cursor: pointer">
         <a  class="thumbnail module">

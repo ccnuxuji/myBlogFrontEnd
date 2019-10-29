@@ -59,7 +59,6 @@ export class EditorComponent implements OnInit {
 
   contentChanged(input) {
     this.editorContentChanged.emit(this.contentObject);
-    // console.log(this.contentObject);
   }
 
 }

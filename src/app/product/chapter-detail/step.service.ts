@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+
 import {Step} from '../../shared/step.model';
 import {environment} from '../../../environments/environment';
 
@@ -13,21 +15,42 @@ export class StepService {
 
   constructor(private http: HttpClient) { }
 
-  fetchStepsByChapter(chapterId: number) {
-    const para = {cid: String(chapterId)};
-    this.http.get<Step[]>(environment.API + '/steps_chapter', {params: para}).
-    subscribe(steps => {
-      this.setSteps(steps);
-      console.log(steps);
-    });
+  addStep(step: Step) {
+    return this.http.post(
+      environment.API + '/step',
+      step
+    );
   }
 
-  submitStep(step: any) {
-    this.http.put(environment.API + '/steps', step).subscribe(
-      response => {
-        console.log(response);
-      }
+  deleteStep(stepId: number) {
+    return this.http.delete(
+      environment.API +  '/step/' + String(stepId)
     );
+  }
+
+  updateStep(step: Step) {
+    return this.http.put(
+      environment.API + '/step',
+      step
+    );
+  }
+
+  getStep(stepId: number) {
+    return this.http.get(
+      environment.API + '/step/' + String(stepId)
+    );
+  }
+
+  fetchStepsByChapter(chapterId: number) {
+    const para = {cid: String(chapterId)};
+    console.log(chapterId);
+    return this.http.get<Step[]>(environment.API + '/steps_chapter', {params: para})
+      .pipe(
+        tap(res => {
+          this.setSteps(res);
+          console.log(res);
+        })
+      );
   }
 
   setSteps(steps: Step[]) {
@@ -36,6 +59,6 @@ export class StepService {
   }
 
   getSteps() {
-    return this.steps;
+    return this.steps.slice();
   }
 }

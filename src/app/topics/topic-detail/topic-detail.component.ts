@@ -1,10 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+
 import {Topic} from '../../shared/topic.model';
 import {Product} from '../../shared/product.model';
 import {ProductService} from './product.service';
-import {Subscription} from 'rxjs';
 import {TopicService} from '../topic.service';
+import {AuthService} from '../../auth/auth.service';
+import {ResponseData} from '../topic-edit/topic-edit.component';
 
 @Component({
   selector: 'app-product-detail',
@@ -12,36 +15,36 @@ import {TopicService} from '../topic.service';
   styleUrls: ['./topic-detail.component.css']
 })
 export class TopicDetailComponent implements OnInit, OnDestroy {
-  subscriptionTopic = new Subscription();
-  subscriptionProduct = new Subscription();
+  userSub = new Subscription();
+  isAdminLogin = false;
 
-  topic: Topic = new Topic(-1, 0, 'wait');
+  topic: Topic = new Topic();
   topicId: number;
   products: Product[] = [];
-  productNew = new Product(null, null, null, '', 'Click To Add New', '');
+  productNew = new Product(null, null, null,
+    '', 'Click To Add New', '');
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private productService: ProductService,
-              private topicService: TopicService) { }
+              private topicService: TopicService,
+              private authService: AuthService) {
+  }
 
    ngOnInit() {
-    this.route.params.subscribe(
+     this.route.params.subscribe(
       (params: Params) => {
-        this.topicService.fetchTopics();
-        this.productService.fetchProducts();
         this.topicId = +params.topicId;
-        this.topic = this.topicService.getTopicById(this.topicId);
-        this.subscriptionTopic = this.topicService.topicsChanged.subscribe(
-          topic => {
-            this.topic = this.topicService.getTopicById(this.topicId);
-          });
-        this.products = this.productService.getProductsByTopic(this.topic);
-        this.subscriptionProduct = this.productService.productsChanged.subscribe(
-          products => {
-            this.products = this.productService.getProductsByTopic(this.topic);
+        this.products = this.route.snapshot.data.products;
+        this.topicService.getTopic(this.topicId)
+          .subscribe((res: ResponseData) => {
+            this.topic = res.data;
           });
       });
+
+     this.userSub = this.authService.user.subscribe(user => {
+       this.isAdminLogin = !!user && user.name === 'ccnuxuji';
+     });
    }
 
   onClick() {
@@ -53,8 +56,7 @@ export class TopicDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionTopic.unsubscribe();
-    this.subscriptionProduct.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
 }

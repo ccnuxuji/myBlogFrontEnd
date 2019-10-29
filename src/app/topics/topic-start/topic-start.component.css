@@ -1,0 +1,10 @@
+#head {
+  display: flex;
+  justify-content: space-between;
+}
+
+p {
+  margin: 0;
+  padding-top: 7px;
+  text-align: center;
+}

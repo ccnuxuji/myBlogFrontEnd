@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Topic} from '../shared/topic.model';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+
+import {Topic} from '../shared/topic.model';
 import {environment} from '../../environments/environment';
 
 @Injectable({
@@ -13,12 +15,29 @@ export class TopicService {
 
   constructor(private http: HttpClient) { }
 
+  addTopic(topic: Topic) {
+    return this.http.post(environment.API + '/topic', topic);
+  }
+
+  deleteTopic(topicId: number) {
+    return this.http.delete(environment.API + '/topic/' + topicId);
+  }
+
+  updateTopic(topic: Topic) {
+    return this.http.put(environment.API + '/topic', topic);
+  }
+
+  getTopic(topicId: number) {
+    return this.http.get(environment.API + '/topic/' + topicId);
+  }
+
   fetchTopics() {
-    this.http.get<Topic[]>(environment.API + '/topics').
-      subscribe(topics => {
-        this.setTopics(topics);
-        console.log(topics);
-    });
+    return this.http.get<Topic[]>(environment.API + '/topics').
+      pipe(
+        tap(topics => {
+          this.setTopics(topics);
+        })
+    );
   }
 
   setTopics(topics: Topic[]) {
@@ -27,30 +46,6 @@ export class TopicService {
   }
 
   getTopics() {
-    return this.topics;
-  }
-
-  getTopicById(topicId: number): Topic {
-    let res: Topic = new Topic(null, null, '');
-    this.topics.forEach(topic => {
-      if (topic.id === topicId) {
-        res = topic;
-    }
-    });
-    return res;
-  }
-
-  updateTopic(topic: Topic) {
-    this.http.post(environment.API + '/topic', topic).
-    subscribe(response => {
-      console.log(response);
-    });
-  }
-
-  deleteTopic(topicId: number) {
-    this.http.delete(environment.API + '/topic/' + topicId).
-    subscribe(response => {
-      console.log(response);
-    });
+    return this.topics.slice();
   }
 }

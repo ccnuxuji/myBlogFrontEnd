@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+
 import {ProductService} from '../product.service';
 import {Product} from '../../../shared/product.model';
-import {Subscription} from 'rxjs';
+import {ResponseData} from '../../topic-edit/topic-edit.component';
 
 @Component({
   selector: 'app-product-edit',
@@ -12,9 +13,9 @@ import {Subscription} from 'rxjs';
 })
 export class ProductEditComponent implements OnInit, OnDestroy {
   productId: number;
+  topicId: number;
   editMode = false;
   productForm: FormGroup;
-  subscription = new Subscription();
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -23,23 +24,35 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.productId = +params.productId;
-      console.log(this.productId);
+      this.topicId = +params.topicId;
       this.editMode = params.productId !== 'new';
-      console.log(this.editMode);
       this.initForm();
     });
   }
 
-
   onSubmit() {
-    console.log(this.productForm.value);
-    this.productService.updateProduct(this.productForm.value);
-    this.onCancel();
+    if (this.editMode) {
+      this.productService.updateProduct(this.productForm.value)
+        .subscribe(res => {
+          this.productService.fetchProductsByTopic(this.topicId).subscribe();
+          this.onCancel();
+        });
+    } else {
+      console.log(this.productForm.value);
+      this.productService.addProduct(this.productForm.value)
+        .subscribe(res => {
+          this.productService.fetchProductsByTopic(this.topicId).subscribe();
+          this.onCancel();
+        });
+    }
   }
 
   onDelete() {
-    this.productService.deleteProduct(this.productId);
-    this.onCancel();
+    this.productService.deleteProduct(this.productId).subscribe(res => {
+      this.productService.fetchProductsByTopic(this.topicId).subscribe();
+      // this.router.navigate(['../../'], {relativeTo: this.route});
+      this.onCancel();
+    });
   }
 
   onCancel() {
@@ -48,56 +61,36 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
 
   initForm() {
-    let productId = null;
-    let productName = '';
-    let productTid = null;
-    let productOrd = null;
-    let productThumbnail = '';
-    let productDescription = '';
+    let product = new Product();
+    product.tid = this.topicId;
 
 
     if (this.editMode) {
-      console.log('test');
-      this.productService.fetchProductById(this.productId);
-      let product: Product = this.productService.product;
-      this.subscription = this.productService.productChanged.subscribe(data => {
-        product = data;
-        productId = product.id;
-        productName = product.name;
-        productTid = product.tid;
-        productOrd = product.ord;
-        productThumbnail = product.thumbnail;
-        productDescription = product.description;
+      this.productService.getProduct(this.productId).subscribe((res: ResponseData) => {
+        product = res.data;
+        product.tid = this.topicId;
         this.productForm = new FormGroup({
-          id: new FormControl(productId),
-          name: new FormControl(productName, Validators.required),
-          tid: new FormControl(productTid, Validators.required),
-          ord: new FormControl(productOrd, Validators.required),
-          thumbnail: new FormControl(productThumbnail),
-          description: new FormControl(productDescription)
+          id: new FormControl(product.id),
+          name: new FormControl(product.name, Validators.required),
+          tid: new FormControl(product.tid, Validators.required),
+          ord: new FormControl(product.ord, Validators.required),
+          thumbnail: new FormControl(product.thumbnail),
+          description: new FormControl(product.description)
         });
       });
-      console.log(product);
-      productId = product.id;
-      productName = product.name;
-      productTid = product.tid;
-      productOrd = product.ord;
-      productThumbnail = product.thumbnail;
-      productDescription = product.description;
     }
-
     this.productForm = new FormGroup({
-      id: new FormControl(productId),
-      name: new FormControl(productName, Validators.required),
-      tid: new FormControl(productTid, Validators.required),
-      ord: new FormControl(productOrd, Validators.required),
-      thumbnail: new FormControl(productThumbnail),
-      description: new FormControl(productDescription)
+      id: new FormControl(product.id),
+      name: new FormControl(product.name, Validators.required),
+      tid: new FormControl(product.tid, Validators.required),
+      ord: new FormControl(product.ord, Validators.required),
+      thumbnail: new FormControl(product.thumbnail),
+      description: new FormControl(product.description)
     });
+
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
 }
