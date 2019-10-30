@@ -2,9 +2,13 @@
 
   <div class="panel-heading">
     <div id="head">
-      <div style="float: left; color: #428BCA">
+      <div
+        *ngIf="isAdminLogin"
+        style="float: left; color: #428BCA">
         <span class="glyphicon glyphicon-list"></span>
-        <span style="color: black">  {{ currChapter.name }}</span>
+        <span style="color: black;">
+          {{ currChapter.name }}
+        </span>
       </div>
       <div style="float: right">
         <button class="btn btn-success"
@@ -26,7 +30,7 @@
 
 <div *ngIf="isAdminLogin">
   <label for="sname"> Step Name:</label>
-  <input id="sname" [(ngModel)]="currStepName">
+  <input id="sname" [(ngModel)]="currStepName" class="form-control">
 </div>
 
 

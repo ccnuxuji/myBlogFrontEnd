@@ -15,7 +15,7 @@ import {Product} from '../../shared/product.model';
 })
 export class ChapterListComponent implements OnInit, OnDestroy {
   @Input() productId: number;
-  product: Product;
+  product: Product = new Product();
   chapters: Chapter[];
   userSub = new Subscription();
   chaptersSub = new Subscription();
