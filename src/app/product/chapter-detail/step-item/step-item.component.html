@@ -1,9 +1,12 @@
-<div (click)="onClick()" #stepEl>
+<div>
   <h5>{{ step.name }}</h5>
   <quill-view-html
     [content]="step.content"
     format="text"
     theme="snow"
   ></quill-view-html>
+  <button class="btn btn-success"
+          *ngIf="isAdminLogin"
+          (click)="onEdit()">Edit</button>
   <hr>
 </div>
