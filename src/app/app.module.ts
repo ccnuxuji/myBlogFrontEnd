@@ -6,8 +6,9 @@ import {HeaderComponent} from './header/header.component';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {SharedMoudle} from './shared/shared.module';
-import { SearchComponent } from './search/search.component';
-import { WelcomeComponent } from './welcome/welcome.component';
+import {SearchComponent} from './search/search.component';
+import {WelcomeComponent} from './welcome/welcome.component';
+
 
 @NgModule({
   declarations: [

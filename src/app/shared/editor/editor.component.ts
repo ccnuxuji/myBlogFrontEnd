@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
+
+
 export interface UploadResponseData {
   contentType: string;
   fileName: string;

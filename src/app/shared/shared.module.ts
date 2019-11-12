@@ -2,13 +2,15 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+
 import {EditorComponent} from './editor/editor.component';
 import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 import {DropdownDirective} from './dropdown.directive';
 import {QuillModule} from 'ngx-quill';
 import {AlertComponent} from './alert/alert.component';
 import {PlaceholderDirective} from './placeholder/placeholder.directive';
-import { HighlightPipe } from './highlight.pipe';
+import {HighlightPipe} from './highlight.pipe';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +31,7 @@ import { HighlightPipe } from './highlight.pipe';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HighlightPipe
+    HighlightPipe,
   ],
   imports: [
     CommonModule,
@@ -52,7 +54,7 @@ import { HighlightPipe } from './highlight.pipe';
           [{font: []}],
           [{align: []}],
           ['clean'],                                         // remove formatting button
-          ['link', 'image', 'video']                         // link and image, video
+          ['formula', 'link', 'image', 'video']                         // link and image, video
         ]
       }
     })
