@@ -30,7 +30,6 @@ export class EditorComponent implements OnInit {
     const toolbar = quill.getModule('toolbar');
     toolbar.addHandler('image', this.imageHandler.bind(this));
     this.editor = quill;
-    console.log('success');
   }
 
   imageHandler() {
@@ -42,9 +41,9 @@ export class EditorComponent implements OnInit {
       const file = Imageinput.files[0];
       const data: FormData = new FormData();
       data.append('file', file, file.name);
-      // const header = new Headers();
-      // header.append('Accept', 'application/json');
-      // const options = { headers: header };
+      const header = new Headers();
+      header.append('Accept', 'application/json');
+      const options = { headers: header };
       if (Imageinput.files != null && Imageinput.files[0] != null) {
         this.http.post<UploadResponseData>('http://localhost:8080/techroad/upload', data)
           .subscribe(res => {
