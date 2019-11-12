@@ -11,6 +11,7 @@ import {ProductStartComponent} from './product-start/product-start.component';
 import {ChapterEditComponent} from './chapter-edit/chapter-edit.component';
 import {SharedMoudle} from '../shared/shared.module';
 import {ProductRoutingModule} from './product-routing.module';
+import { StepEditComponent } from './chapter-detail/step-edit/step-edit.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {ProductRoutingModule} from './product-routing.module';
     StepItemComponent,
     ProductStartComponent,
     ChapterEditComponent,
+    StepEditComponent,
   ],
   imports: [
     SharedMoudle,

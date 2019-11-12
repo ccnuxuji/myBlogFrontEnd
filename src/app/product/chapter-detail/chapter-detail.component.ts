@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 import {Step} from '../../shared/step.model';
 import {Chapter} from '../../shared/chapter.model';
@@ -8,7 +8,6 @@ import {StepService} from './step.service';
 import {AuthService} from '../../auth/auth.service';
 import {ChapterService} from '../chapter-list/chapter.service';
 import {ResponseData} from '../../topics/topic-edit/topic-edit.component';
-import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chapter-detail',
@@ -23,9 +22,6 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   chapterId: number;
   currChapter = new Chapter();
   steps: Step[] = [];
-  editorContent: string;
-  currStep: Step = new Step();
-  currStepName = this.currStep.name;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -59,41 +55,8 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['edit'], {relativeTo: this.route});
   }
 
-  getContent(event: string) {
-    this.editorContent = event;
-    console.log(this.editorContent);
-  }
-
-  newStepClick() {
-    const step = new Step();
-    step.cid = this.chapterId;
-    step.name = this.currStepName;
-    step.content = this.editorContent;
-    this.stepService.addStep(step).subscribe(res => {
-      this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
-    });
-  }
-
-  editStepClick() {
-    const step = new Step();
-    step.id = this.currStep.id
-    step.cid = this.chapterId;
-    step.name = this.currStepName;
-    step.content = this.editorContent;
-    this.stepService.updateStep(step).subscribe(res => {
-      this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
-    });
-  }
-
-  deleteStepClick() {
-    this.stepService.deleteStep(this.currStep.id).subscribe(res => {
-      this.stepService.fetchStepsByChapter(this.chapterId).subscribe();
-    });
-  }
-
-  clickCurrentStep(event: Step) {
-    this.currStep = event;
-    this.currStepName = event.name;
+  newStep() {
+    this.router.navigate(['new'], {relativeTo: this.route});
   }
 
   ngOnDestroy(): void {
