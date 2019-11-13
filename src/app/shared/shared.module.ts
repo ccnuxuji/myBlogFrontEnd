@@ -40,6 +40,7 @@ import {HighlightPipe} from './highlight.pipe';
     QuillModule.forRoot({
       modules: {
         syntax: true,
+        formula: true,
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
           ['blockquote', 'code-block'],
@@ -54,7 +55,8 @@ import {HighlightPipe} from './highlight.pipe';
           [{font: []}],
           [{align: []}],
           ['clean'],                                         // remove formatting button
-          ['formula', 'link', 'image', 'video']                         // link and image, video
+          ['formula'],
+          ['link', 'image', 'video']                         // link and image, video
         ]
       }
     })

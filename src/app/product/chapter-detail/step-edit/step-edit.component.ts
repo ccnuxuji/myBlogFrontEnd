@@ -66,7 +66,7 @@ export class StepEditComponent implements OnInit {
 
   getContent(event: string) {
     this.currContent = event;
-    console.log(this.currContent);
+    console.log(event);
   }
 
   onSubmit() {
