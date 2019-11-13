@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import Quill from 'quill';
+import {environment} from '../../../environments/environment';
+
 
 export interface UploadResponseData {
   contentType: string;
@@ -46,7 +48,7 @@ export class EditorComponent implements OnInit {
       header.append('Accept', 'application/json');
       const options = { headers: header };
       if (Imageinput.files != null && Imageinput.files[0] != null) {
-        this.http.post<UploadResponseData>('http://localhost:8080/techroad/upload', data)
+        this.http.post<UploadResponseData>(environment.API + '/upload', data)
           .subscribe(res => {
             const range = this.editor.getSelection(true);
             const index = range.index + range.length;
@@ -72,7 +74,7 @@ export class EditorComponent implements OnInit {
         const imgName = imgSrc.split('/')[5];
         console.log(imgName);
         const para = {imgname: imgName};
-        this.http.delete('http://localhost:8080/techroad/imgdelete', {params: para})
+        this.http.delete(environment.API + '/imgdelete', {params: para})
           .subscribe(res => {
             console.log(res);
           });
