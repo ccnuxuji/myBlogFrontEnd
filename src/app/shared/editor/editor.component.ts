@@ -20,7 +20,6 @@ export class EditorComponent implements OnInit {
 
   @Input() contentObject: string;
   public editor;
-  imgUrls = [];
 
   constructor(private http: HttpClient
              ) { }
