@@ -21,7 +21,7 @@
         [routerLink]="[i.id]"
         routerLinkActive="active"
         class="list-group-item">
-        <p class="list-group-item-text">{{ i.name }}</p>
+        <p class="list-group-item-text" [ngStyle]="{'color': i.color}">{{ i.name }}</p>
       </a>
     </ul>
   </div>

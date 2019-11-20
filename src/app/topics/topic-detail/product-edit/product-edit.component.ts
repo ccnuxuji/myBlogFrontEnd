@@ -5,6 +5,7 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ProductService} from '../product.service';
 import {Product} from '../../../shared/product.model';
 import {ResponseData} from '../../topic-edit/topic-edit.component';
+import {root} from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'app-product-edit',
@@ -50,7 +51,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   onDelete() {
     this.productService.deleteProduct(this.productId).subscribe(res => {
       this.productService.fetchProductsByTopic(this.topicId).subscribe();
-      // this.router.navigate(['../../'], {relativeTo: this.route});
       this.onCancel();
     });
   }

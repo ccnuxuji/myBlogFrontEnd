@@ -4,13 +4,13 @@
        routerLinkActive="active"
        style="cursor: pointer;">
     <a  class="thumbnail module" style="border-radius:15px; background-color: #dff0d8">
-      <span class="pull-right">
+      <div class="pull-right">
         <img
           [src]="product.thumbnail"
           alt="{{ product.name }}"
           class="img-responsive"
           style="max-height: 40px;">
-      </span>
+      </div>
       <!--<div class="pull-left">-->
         <h4 class="list-group-item-heading">{{ product.name }}</h4>
         <p class="">{{ product.description }}</p>
@@ -21,6 +21,5 @@
           *ngIf="isAdminLogin && !isFromStartPage"
           (click)="onEdit()">Eidt</button>
 </div>
-
 
 

@@ -72,6 +72,7 @@ export class ChapterEditComponent implements OnInit {
           this.chapterForm = new FormGroup({
             id: new FormControl(chapter.id),
             name: new FormControl(chapter.name, Validators.required),
+            color: new FormControl(chapter.color),
             pid: new FormControl(this.productId, Validators.required),
             ord: new FormControl(chapter.ord, Validators.required),
             description: new FormControl(chapter.description)
@@ -83,6 +84,7 @@ export class ChapterEditComponent implements OnInit {
       id: new FormControl(chapter.id),
       name: new FormControl(chapter.name, Validators.required),
       pid: new FormControl(this.productId, Validators.required),
+      color: new FormControl(chapter.color),
       ord: new FormControl(chapter.ord, Validators.required),
       description: new FormControl(chapter.description)
     });

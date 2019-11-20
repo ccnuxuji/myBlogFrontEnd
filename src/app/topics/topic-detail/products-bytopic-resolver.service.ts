@@ -14,6 +14,7 @@ export class ProductsBytopicResolverService implements Resolve<Product[]>{
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product[]> | Promise<Product[]> | Product[] {
     const id =  state.url.split('/')[2];
+    console.log(state.url.split('/'))
     return this.productService.fetchProductsByTopic(+id);
   }
 }

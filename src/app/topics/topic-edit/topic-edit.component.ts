@@ -4,6 +4,7 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 
 import {TopicService} from '../topic.service';
 import {Topic} from '../../shared/topic.model';
+import {root} from 'rxjs/internal-compatibility';
 
 export interface ResponseData {
   code: number;
@@ -39,13 +40,13 @@ export class TopicEditComponent implements OnInit {
       this.topicService.updateTopic(this.topicForm.value)
         .subscribe(res => {
           this.topicService.fetchTopics().subscribe();
-          // this.onCancel();
+          this.onCancel();
         });
     } else {
       this.topicService.addTopic(this.topicForm.value)
         .subscribe(res => {
           this.topicService.fetchTopics().subscribe();
-          // this.onCancel();
+          this.onCancel();
       });
     }
   }
