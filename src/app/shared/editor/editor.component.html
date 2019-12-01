@@ -6,9 +6,9 @@
 
 
 <quill-editor
+  class="ql-editor"
   [styles]="{height: '250px'}"
   (onEditorCreated)="editorCreated($event)"
   (onContentChanged)="contentChanged($event)"
   [(ngModel)]="contentObject"
 ></quill-editor>
-
