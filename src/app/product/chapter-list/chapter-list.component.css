@@ -1,0 +1,7 @@
+/*限制字符串长度*/
+p {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
