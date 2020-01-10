@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SearchResponseData, SearchService} from './search.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
 
 export interface SearchResult {
   id: number;
@@ -37,7 +38,8 @@ export class SearchComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private searchService: SearchService,
-              private router: Router) {
+              private router: Router,
+              private domSanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
