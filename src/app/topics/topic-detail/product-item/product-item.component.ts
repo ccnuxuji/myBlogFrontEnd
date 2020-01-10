@@ -3,6 +3,8 @@ import {Product} from '../../../shared/product.model';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {AuthService} from '../../../auth/auth.service';
 import {Subscription} from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-product-item',
@@ -17,7 +19,8 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.userSub = this.authService.user.subscribe(user => {
@@ -30,6 +33,14 @@ export class ProductItemComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  assembleHTML(strHTML: any) {
+
+    return this.sanitizer.bypassSecurityTrustHtml(strHTML);
+
+  }
+
+
 
   onEdit() {
     this.router.navigate([this.product.id], {relativeTo: this.route});
