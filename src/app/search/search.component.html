@@ -25,7 +25,6 @@
 </div>
 
 <ul *ngFor="let i of searchResult;let idx = index">
-
   <a (click)="jumpToStep(i)">
     <span class="pull-left">
       <img
@@ -34,9 +33,9 @@
         style="max-height: 20px;">
     </span>
     <span [innerHTML]="i.chapter.product.topic.name | highlight:keyword"></span>
-    <span [innerHTML]="i.chapter.product.name | highlight:keyword"></span>
-    <span [innerHTML]="i.chapter.name | highlight:keyword"></span>
-    <span [innerHTML]="i.name | highlight:keyword"></span>
+    -> <span [innerHTML]="i.chapter.product.name | highlight:keyword"></span>
+    -> <span [innerHTML]="i.chapter.name | highlight:keyword"></span>
+    -> <span [innerHTML]="i.name | highlight:keyword"></span>
   </a>
   <quill-view-html
     [content]="i.content"
