@@ -54,9 +54,9 @@ import {HighlightPipe} from './highlight.pipe';
           [{color: []}, {background: []}],          // dropdown with defaults from theme
           [{font: []}],
           [{align: []}],
-          ['clean'],                                         // remove formatting button
+          ['clean'],                            // remove formatting button
           ['formula'],
-          ['link', 'image', 'video']                         // link and image, video
+          ['link']                         // link and image, video
         ]
       }
     })
