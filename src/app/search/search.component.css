@@ -3,3 +3,11 @@ div.pageDiv{
 }
 
 a:hover{text-decoration:none}
+
+
+p {
+  max-width: 1000px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}

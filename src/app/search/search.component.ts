@@ -4,13 +4,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 
 export interface SearchResult {
-  id: number;
-  name: string;
-  description: string;
-  content: string;
-  chapter: {
     id: number;
     name: string;
+    description: string;
     product: {
       id: number;
       name: string;
@@ -20,7 +16,6 @@ export interface SearchResult {
         name: string
       };
     };
-  };
 }
 
 
@@ -80,7 +75,7 @@ export class SearchComponent implements OnInit {
   }
 
   jumpToStep(i: SearchResult) {
-    this.router.navigate(['/product/' + i.chapter.product.id + '/' + i.chapter.id]);
+    this.router.navigate(['/product/' + i.product.id + '/' + i.id]);
   }
 
 
