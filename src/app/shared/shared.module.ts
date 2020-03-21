@@ -56,7 +56,7 @@ import {HighlightPipe} from './highlight.pipe';
           [{align: []}],
           ['clean'],                            // remove formatting button
           ['formula'],
-          ['link']                         // link and image, video
+          ['link', 'image']                         // link and image, video
         ]
       }
     })
